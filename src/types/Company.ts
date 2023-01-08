@@ -4,4 +4,5 @@ export type Company = {
     partner: boolean,
     primaryColor: string,
     secondaryColor: string
+    appliedEmails: string[]
 }

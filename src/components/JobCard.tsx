@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { formatDate } from '../helpers/formatDate'
 import styles from '../styles/Home.module.scss'
+import { Candidate } from '../types/Candidate'
 import { Job } from '../types/Job'
 
 type Props = {
@@ -11,20 +12,25 @@ type Props = {
 
 function JobCard({ job }: Props) {
     const [isExtended, setIsExtended] = useState<string>('none')
+    const [appliedCandidate, setAppliedCandidate] = useState<Candidate>({ name: '', email: '', surname: '', phone: '', attachment: '' })
 
     //handler
     const handleExtendOnClick = () => {
-        console.log('worked')
         if (isExtended === 'none') return setIsExtended('')
         return setIsExtended('none')
+    }
+
+    const handleCandidateOnChange = (event: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLSelectElement>) => {
+        setAppliedCandidate({ ...appliedCandidate, [event.currentTarget.name]: event.currentTarget.value })
+        console.log(appliedCandidate)
     }
 
     return (
         <div className={styles.jobCard}>
             <div className={styles.jobCardInfos}>
                 <div className={styles.jobCardTitle} onClick={handleExtendOnClick}>
-                    <a>{isExtended === 'none' ? <h2>{job.title} ↓</h2> : <h2>{job.title} ↑</h2>}</a>
-                    <h5>{job.company.name}</h5>
+                    <a><h2>{job.title}</h2></a>
+                    {isExtended === 'none' ? <h5>{job.company.name} ↓</h5> : <h5>{job.company.name} ↑</h5>}
                 </div>
                 <div className={styles.jobCardParagraph}>
                     <h5>Arbeitsbereiche</h5>
@@ -77,7 +83,7 @@ function JobCard({ job }: Props) {
                         <img alt={job.company.name} src={job.company.image} />
                         <h3>{job.company.name}</h3>
                         {job.company.partner ? <h5>Partner ✅</h5> : ''}
-                        <button className={styles.btnPrimary}>Jetzt bewerben</button>
+                        <a href={`#${job.title}`} style={{ color: '#fff' }}><button className={styles.btnPrimary}>Jetzt bewerben</button></a>
                     </div>
                 </div>
                 <div className={styles.jobTopics}>
@@ -104,8 +110,37 @@ function JobCard({ job }: Props) {
                         ))}
                     </ul>
                 </div>
-                <div>
-                    <button className={styles.btnPrimary}>Jetzt bewerben</button>
+                <div className={styles.applyJobForm} id={job.title}>
+                    <h4 style={{ fontWeight: 600 }}> Jetzt bewerben</h4>
+                    <form action="https://formsubmit.co/faf324c9c5baeb920124737601280b10" method="POST">
+                        <div style={{ display: 'flex', gap: '1rem' }}>
+                            <div className={styles.applyField}>
+                                <label>Vorname</label>
+                                <input type="text" name='name' value={appliedCandidate.name} onChange={event => handleCandidateOnChange(event)} required />
+                            </div>
+                            <div className={styles.applyField}>
+                                <label>Name</label>
+                                <input type="text" name='surname' value={appliedCandidate.surname} onChange={event => handleCandidateOnChange(event)} required />
+                            </div>
+                        </div>
+                        <div className={styles.applyField}>
+                            <label>Email</label>
+                            <input type="email" name='email' value={appliedCandidate.email} onChange={event => handleCandidateOnChange(event)} required />
+                            {job.emailsApplied?.find(email => email === appliedCandidate.email) ? <code style={{ color: 'red' }}>This email already applied for this job</code> : ''}
+                        </div>
+                        <div className={styles.applyField}>
+                            <label>Kontakt-Telefon</label>
+                            <input type="tel" name='phone' value={appliedCandidate.phone} onChange={event => handleCandidateOnChange(event)} required />
+                        </div>
+                        <div className={styles.applyField}>
+                            <label>Lebenslauf (.pdf)</label>
+                            <input type="file" accept="application/pdf" name='attachment' value={appliedCandidate.attachment} onChange={event => handleCandidateOnChange(event)} required />
+                        </div>
+                        <div>
+                            {!appliedCandidate.email || !appliedCandidate.name || !appliedCandidate.surname || !appliedCandidate.phone || !appliedCandidate.attachment ? <p style={{ margin: '1rem 0' }}>Ich brauche alle Informationen 🥸</p> : <p style={{ margin: '1rem 0' }}>Perfekt 😎</p>}
+                            <button type='submit' className={styles.btnPrimary}>Weiter</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

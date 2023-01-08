@@ -9,6 +9,7 @@ export const fakeCompanies: Company[] = [
         partner: true,
         primaryColor: '#000000',
         secondaryColor: '#AF1F29',
+        appliedEmails: []
     }
 ]
 
@@ -39,7 +40,8 @@ export const fakeJobs: Job[] = [
         workingTime: 'Vollzeit',
         tasks: [],
         profile: ['mehrjährige Berufserfahrung im Bereich Automatendrehtechnik', 'selbstständiges Einrichten der Drehautomaten', 'hohes Maß an Qualitätsbewusstsein'],
-        benefits: ['Arbeit im Einschichtbetrieb mit flexiblen Arbeitszeiten', 'flexible Urlaubsplanung über das gesamte Kalenderjahr', 'klimatisierte Arbeitsplätze', 'überdurchschnittliche Sozialleistungen und Sonderzahlungen', 'Firmenparkplatz', 'Jobrad', 'gutes Betriebsklima', 'Gesundheitsmanagement', 'Lieferdienst für Vesper und Mittagessen', 'und vieles mehr finden Sie unter „Böhmler als Arbeitgeber“']
+        benefits: ['Arbeit im Einschichtbetrieb mit flexiblen Arbeitszeiten', 'flexible Urlaubsplanung über das gesamte Kalenderjahr', 'klimatisierte Arbeitsplätze', 'überdurchschnittliche Sozialleistungen und Sonderzahlungen', 'Firmenparkplatz', 'Jobrad', 'gutes Betriebsklima', 'Gesundheitsmanagement', 'Lieferdienst für Vesper und Mittagessen', 'und vieles mehr finden Sie unter „Böhmler als Arbeitgeber“'],
+        emailsApplied: ['test@email.com']
     },
     {
         title: 'Zerspanungsmechaniker (m/w/d) für CNC-Ringdrehautomaten (escomatic)',
@@ -68,4 +70,44 @@ export const fakeJobs: Job[] = [
         profile: ['mehrjährige Berufserfahrung im Bereich Automatendrehtechnik', 'selbstständiges Einrichten der Drehautomaten', 'hohes Maß an Qualitätsbewusstsein'],
         benefits: ['Arbeit im Einschichtbetrieb mit flexiblen Arbeitszeiten', 'flexible Urlaubsplanung über das gesamte Kalenderjahr', 'klimatisierte Arbeitsplätze', 'überdurchschnittliche Sozialleistungen und Sonderzahlungen', 'Firmenparkplatz', 'Jobrad', 'gutes Betriebsklima', 'Gesundheitsmanagement', 'Lieferdienst für Vesper und Mittagessen', 'und vieles mehr finden Sie unter „Böhmler als Arbeitgeber“']
     },
+    {
+        title: 'example1',
+        company: fakeCompanies[0],
+        status: true,
+        location: 'Pfzorheim',
+        field: 'Zerspanungsmechaniker',
+        role: 'Berufserfahrene*r',
+        postedDate: new Date(),
+        workingTime: 'Vollzeit',
+        tasks: [],
+        profile: ['mehrjährige Berufserfahrung im Bereich Automatendrehtechnik', 'selbstständiges Einrichten der Drehautomaten', 'hohes Maß an Qualitätsbewusstsein'],
+        benefits: ['Arbeit im Einschichtbetrieb mit flexiblen Arbeitszeiten', 'flexible Urlaubsplanung über das gesamte Kalenderjahr', 'klimatisierte Arbeitsplätze', 'überdurchschnittliche Sozialleistungen und Sonderzahlungen', 'Firmenparkplatz', 'Jobrad', 'gutes Betriebsklima', 'Gesundheitsmanagement', 'Lieferdienst für Vesper und Mittagessen', 'und vieles mehr finden Sie unter „Böhmler als Arbeitgeber“']
+    },
+    {
+        title: 'example2',
+        company: fakeCompanies[0],
+        status: true,
+        location: 'Pfzorheim',
+        field: 'Zerspanungsmechaniker',
+        role: 'Berufserfahrene*r',
+        postedDate: new Date(),
+        workingTime: 'Vollzeit',
+        tasks: [],
+        profile: ['mehrjährige Berufserfahrung im Bereich Automatendrehtechnik', 'selbstständiges Einrichten der Drehautomaten', 'hohes Maß an Qualitätsbewusstsein'],
+        benefits: ['Arbeit im Einschichtbetrieb mit flexiblen Arbeitszeiten', 'flexible Urlaubsplanung über das gesamte Kalenderjahr', 'klimatisierte Arbeitsplätze', 'überdurchschnittliche Sozialleistungen und Sonderzahlungen', 'Firmenparkplatz', 'Jobrad', 'gutes Betriebsklima', 'Gesundheitsmanagement', 'Lieferdienst für Vesper und Mittagessen', 'und vieles mehr finden Sie unter „Böhmler als Arbeitgeber“']
+    },
+    {
+        title: 'example3',
+        company: fakeCompanies[0],
+        status: true,
+        location: 'Pfzorheim',
+        field: 'Zerspanungsmechaniker',
+        role: 'Berufserfahrene*r',
+        postedDate: new Date(),
+        workingTime: 'Vollzeit',
+        tasks: [],
+        profile: ['mehrjährige Berufserfahrung im Bereich Automatendrehtechnik', 'selbstständiges Einrichten der Drehautomaten', 'hohes Maß an Qualitätsbewusstsein'],
+        benefits: ['Arbeit im Einschichtbetrieb mit flexiblen Arbeitszeiten', 'flexible Urlaubsplanung über das gesamte Kalenderjahr', 'klimatisierte Arbeitsplätze', 'überdurchschnittliche Sozialleistungen und Sonderzahlungen', 'Firmenparkplatz', 'Jobrad', 'gutes Betriebsklima', 'Gesundheitsmanagement', 'Lieferdienst für Vesper und Mittagessen', 'und vieles mehr finden Sie unter „Böhmler als Arbeitgeber“']
+    },
+
 ]

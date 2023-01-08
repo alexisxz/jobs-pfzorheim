@@ -15,4 +15,5 @@ export type Job = {
     tasks: string[],
     profile: string[],
     benefits: string[]
+    emailsApplied?: string[]
 }

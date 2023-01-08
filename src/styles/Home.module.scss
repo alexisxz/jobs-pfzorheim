@@ -39,7 +39,9 @@
 
 // HOME PAGE
 .headingSection {
-  background-color: var(--color-light);
+  background-image: url('https://www.tourismus-bw.de/_Resources/Persistent/63496c2893189c90b03069dacf236798d596df30/Pforzheim_Inselsteg_%C2%A9_Pierre-Johne.jpg');
+
+
   display: flex;
   flex-direction: column;
 
@@ -204,6 +206,10 @@
       gap: .5rem;
       border: 1px solid var(--color-light);
 
+      &:hover {
+        border-color: var(--color-primary);
+      }
+
       img {
         width: 150px;
         height: 150px;
@@ -217,6 +223,27 @@
 
     h4 {
       font-weight: 600;
+    }
+  }
+
+  .applyJobForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .applyField {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      padding: .5rem 1rem;
+      border: 1px solid #888;
+      border-radius: 10px;
+
+      &:focus {
+        border-color: var(--color-primary);
+      }
     }
   }
 }

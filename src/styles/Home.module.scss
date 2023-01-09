@@ -43,6 +43,7 @@
   background-repeat: no-repeat;
   background-position: top;
   background-size: cover;
+  color: var(--color-white);
 
 
   display: flex;
@@ -78,6 +79,13 @@
         color: var(--color-black);
       }
     }
+
+    .stirnerLogo {
+      height: 50px;
+      object-fit: contain;
+      margin: 1rem 0;
+    }
+
   }
 }
 
@@ -96,8 +104,9 @@
   }
 
   img {
+    height: 100px;
     width: 150px;
-    height: auto;
+    object-fit: contain;
   }
 }
 

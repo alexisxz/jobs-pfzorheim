@@ -87,6 +87,7 @@ export default function PolyRack() {
                             </div>
                             <h1>POLYRACK Karriere</h1>
                             <h5>Powered by <strong>stirner/stirner</strong></h5>
+                            <Image src={StirnerLogo} alt='Stirner logo' className={styles.stirnerLogo} />
                             <div className={styles.inputFilter}>
                                 <input type="text" placeholder='🔎 Search job (e.g. Mechaniker, Ausbildung, etc...)' name='title' value={filters.title} onChange={e => handleFiltersOnChange(e)} />
                             </div>
@@ -131,7 +132,7 @@ export default function PolyRack() {
                                 </select>
                             </div>
                             <div className={styles.searchFilterCleaning}>
-                                <a onClick={() => setFilters(clearFilters)}>Filter zurücksetzen 🕵🏼‍♂️</a>
+                                <button onClick={() => setFilters(clearFilters)}>Filter zurücksetzen 🕵🏼‍♂️</button>
                             </div>
                         </div>
 

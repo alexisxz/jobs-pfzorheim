@@ -107,6 +107,7 @@ export default function Home() {
               </div>
               <h1>Pforzheim Jobs</h1>
               <h5>Powered by <strong>stirner/stirner</strong></h5>
+              <Image src={StirnerLogo} alt='Stirner logo' className={styles.stirnerLogo} />
               <div className={styles.inputFilter}>
                 <input type="text" placeholder='🔎 Search job (e.g. Mechaniker, Ausbildung, etc...)' name='title' value={filters.title} onChange={e => handleFiltersOnChange(e)} />
               </div>

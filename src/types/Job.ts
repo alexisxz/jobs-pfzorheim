@@ -4,13 +4,14 @@ import { Company } from "./Company"
 
 export type Job = {
     title: string,
+    shortDescription?: string,
     company: Company,
     status: boolean,
     location: string,
     field: string,
     role: string,
     postedDate: Date,
-    startingDate?: Date,
+    startingDate?: Date | string,
     workingTime: string,
     tasks: string[],
     profile: string[],

@@ -11,6 +11,7 @@ type Props = {
 }
 
 function JobCard({ job }: Props) {
+    const isPartner = job.company.partner
     const [isExtended, setIsExtended] = useState<string>('none')
     const [appliedCandidate, setAppliedCandidate] = useState<Candidate>({ name: '', email: '', surname: '', phone: '', attachment: '' })
 
@@ -27,7 +28,7 @@ function JobCard({ job }: Props) {
 
     return (
         <div className={styles.jobCard}>
-            <div className={styles.jobCardInfos}>
+            <div className={`${styles.jobCardInfos} ${isPartner ? styles.partnerCompany : ''}`}>
                 <div className={styles.jobCardTitle} onClick={handleExtendOnClick}>
                     <a><h2>{job.title}</h2></a>
                     {isExtended === 'none' ? <h5>{job.company.name} ↓</h5> : <h5>{job.company.name} ↑</h5>}
@@ -83,8 +84,11 @@ function JobCard({ job }: Props) {
                         <img alt={job.company.name} src={job.company.image} />
                         <h3>{job.company.name}</h3>
                         {job.company.partner ? <h5>Partner ✅</h5> : ''}
-                        <a href={`#${job.title}`} style={{ color: '#fff' }}><button className={styles.btnPrimary}>Jetzt bewerben</button></a>
+                        <a href={`#${job.title + job.company + job.location}`} style={{ color: '#fff' }}><button className={styles.btnPrimary}>Jetzt bewerben</button></a>
                     </div>
+                </div>
+                <div className={styles.jobTopics} style={{ marginTop: '1rem' }}>
+                    <p>{job.shortDescription}</p>
                 </div>
                 <div className={styles.jobTopics}>
                     <h4>Ihre Aufgaben:</h4>
@@ -110,9 +114,9 @@ function JobCard({ job }: Props) {
                         ))}
                     </ul>
                 </div>
-                <div className={styles.applyJobForm} id={job.title}>
+                <div className={styles.applyJobForm} id={job.title + job.company + job.location}>
                     <h4 style={{ fontWeight: 600 }}> Jetzt bewerben</h4>
-                    <form action="https://formsubmit.co/faf324c9c5baeb920124737601280b10" method="POST">
+                    <form action="https://formsubmit.co/faf324c9c5baeb920124737601280b10" method="POST" encType="multipart/form-data">
                         <div style={{ display: 'flex', gap: '1rem' }}>
                             <div className={styles.applyField}>
                                 <label>Vorname</label>

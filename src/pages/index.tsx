@@ -4,12 +4,14 @@ import styles from '../styles/Home.module.scss'
 
 import BoehmlerLogo from 'public/böhmler-logo.png'
 import StirnerLogo from 'public/stirner-stirner-logo.png'
+import PolyRackLogo from 'public/polyrack-logo.jpeg'
 
 
 import React, { useEffect, useState } from 'react'
 import { Job } from '../types/Job'
 import { fakeJobs } from '../data/fakeData'
 import JobCard from '../components/JobCard'
+import { formatHomeFilter } from '../helpers/formatHomeFilters'
 
 export default function Home() {
   const [jobs, setJobs] = useState<Job[]>(fakeJobs.filter(job => job.status !== false))
@@ -18,6 +20,7 @@ export default function Home() {
   const [maxJobCards, setMaxJobCards] = useState<number>(5)
 
   //filter
+  const [filtersCategory, setFiltersCategory] = useState(formatHomeFilter)
   const [filters, setFilters] = useState({
     title: '',
     role: '',
@@ -37,14 +40,28 @@ export default function Home() {
   }, [jobCardsQuantity, jobs, maxJobCards])
 
   useEffect(() => {
-    if (!filters.title) return setJobs(fakeJobs.filter(job => job.status !== false))
-
+    if (!filters.title && !filters.field && !filters.role && !filters.location) return setJobs(fakeJobs.filter(job => job.status !== false))
     let newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title))
+
+    if (filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.role === filters.role)
+
+    if (filters.field !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.field === filters.field)
+
+    if (filters.location !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.location === filters.location)
+
+    if (filters.role !== '' && filters.field !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.role === filters.role && job.field === filters.field)
+
+    if (filters.role !== '' && filters.location !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.role === filters.role && job.location === filters.location)
+
+    if (filters.field !== '' && filters.location !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.field === filters.field && job.location === filters.location)
+
+    if (filters.field !== '' && filters.location !== '' && filters.role) newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.field === filters.field && job.location === filters.location && job.role === filters.role)
+
     setJobsList(newJobsList)
   }, [filters])
 
   // handler
-  const handleFiltersOnChange = (event: React.FormEvent<HTMLInputElement>) => {
+  const handleFiltersOnChange = (event: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLSelectElement>) => {
     setFilters({ ...filters, [event.currentTarget.name]: event.currentTarget.value })
   }
 
@@ -68,7 +85,7 @@ export default function Home() {
               <h1>Pforzheim Jobs</h1>
               <h5>Powered by <strong>stirner/stirner</strong></h5>
               <div className={styles.inputFilter}>
-                <input type="text" placeholder='🔎 Search job (e.g. Einkäufer, Webentwickler, etc...)' name='title' value={filters.title} onChange={e => handleFiltersOnChange(e)} />
+                <input type="text" placeholder='🔎 Search job (e.g. Mechaniker, Ausbildung, etc...)' name='title' value={filters.title} onChange={e => handleFiltersOnChange(e)} />
               </div>
             </div>
           </div>
@@ -78,8 +95,7 @@ export default function Home() {
           <div className={styles.container}>
             <div className={styles.picsWrapper}>
               <span>trusted by</span>
-              <Image src={BoehmlerLogo} alt='böhmler logo' />
-              <Image src={StirnerLogo} alt='stirner-stirner logo' />
+              <Image src={PolyRackLogo} alt='PolyRack logo' />
             </div>
           </div>
         </section>
@@ -88,24 +104,27 @@ export default function Home() {
           <div className={styles.container}>
             <div className={styles.filtersWrapper}>
               <div className={styles.searchFilter}>
-                <select>
-                  <option value="" disabled selected>👩‍🎓 Role</option>
-                  <option value="">Berufserfahrene*r</option>
-                  <option value="">Student*in</option>
+                <select name='role' value={filters.role} onChange={e => handleFiltersOnChange(e)}>
+                  <option value="" selected>👩‍🎓 Role</option>
+                  {filtersCategory?.role.map((item, index) => (
+                    <option key={index} value={item}>{item}</option>
+                  ))}
                 </select>
               </div>
               <div className={styles.searchFilter}>
-                <select>
-                  <option value="" disabled selected>🧳 Field</option>
-                  <option value="">Einkauf</option>
-                  <option value="">Automatendrehtechnik</option>
+                <select name='field' value={filters.field} onChange={e => handleFiltersOnChange(e)}>
+                  <option value="" selected>🧳 Field</option>
+                  {filtersCategory?.field.map((item, index) => (
+                    <option key={index} value={item}>{item}</option>
+                  ))}
                 </select>
               </div>
               <div className={styles.searchFilter}>
-                <select>
-                  <option value="" disabled selected>🌎 Location</option>
-                  <option value="">Pforzheim Süd</option>
-                  <option value="">Pforzheim Nord</option>
+                <select name='location' value={filters.location} onChange={e => handleFiltersOnChange(e)}>
+                  <option value="" selected>🌎 Location</option>
+                  {filtersCategory?.location.map((item, index) => (
+                    <option key={index} value={item}>{item}</option>
+                  ))}
                 </select>
               </div>
             </div>

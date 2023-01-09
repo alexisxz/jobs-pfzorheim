@@ -14,7 +14,7 @@ export const fakeCompanies: Company[] = [
     {
         name: 'POLYRACK Electronic-Aufbausysteme GmbH',
         image: 'https://www.berufaktuell-pforzheim.de/wp-content/uploads/2022/01/6e13784c-4861-4a06-b2d1-3b6c2c1c9835-1024x741.jpg',
-        partner: false,
+        partner: true,
         primaryColor: '#5A6873',
         secondaryColor: '#0BA1E3',
         appliedEmails: []
@@ -25,9 +25,9 @@ export const fakeJobs: Job[] = [
     {
         title: 'Einkäufer (m/w/d)',
         company: fakeCompanies[0],
-        status: false,
+        status: true,
         location: 'Pfzorheim',
-        field: 'Einkauf',
+        field: 'Vertrieb & Administration',
         role: 'Berufserfahrene*r',
         postedDate: new Date(),
         startingDate: new Date(),
@@ -39,9 +39,9 @@ export const fakeJobs: Job[] = [
     {
         title: 'Zerspanungsmechaniker (m/w/d) für CNC-Einspindeldrehtautomaten (Star, Tornos)',
         company: fakeCompanies[0],
-        status: false,
+        status: true,
         location: 'Pfzorheim',
-        field: 'Automatendrehtechnik',
+        field: 'Produktion, Montage & Qualität',
         role: 'Berufserfahrene*r',
         postedDate: new Date(),
         startingDate: new Date(),
@@ -54,9 +54,9 @@ export const fakeJobs: Job[] = [
     {
         title: 'Zerspanungsmechaniker (m/w/d) für CNC-Ringdrehautomaten (escomatic)',
         company: fakeCompanies[0],
-        status: false,
+        status: true,
         location: 'Pfzorheim',
-        field: 'Zerspanungsmechaniker',
+        field: 'Produktion, Montage & Qualität',
         role: 'Berufserfahrene*r',
         postedDate: new Date(),
         startingDate: new Date(),
@@ -68,9 +68,9 @@ export const fakeJobs: Job[] = [
     {
         title: 'Zerspanungsmechaniker (m/w/d) für kurvengesteuerte Drehautomaten (Tornos, Gildemeister)',
         company: fakeCompanies[0],
-        status: false,
+        status: true,
         location: 'Pfzorheim',
-        field: 'Zerspanungsmechaniker',
+        field: 'Produktion, Montage & Qualität',
         role: 'Berufserfahrene*r',
         postedDate: new Date(),
         workingTime: 'Vollzeit',

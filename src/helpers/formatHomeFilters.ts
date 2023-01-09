@@ -1,10 +1,9 @@
-import { fakeJobs } from "../data/fakeData";
-import { Job } from "../types/Job";
+import { Job } from "../types/Job"
 
-export const formatHomeFilter = () => {
-    if (!fakeJobs) return
+export const formatHomeFilter = (selectedJobs: Job[]) => {
+    if (!selectedJobs) return
 
-    const filteredJobs = fakeJobs.filter(job => job.status !== false)
+    const filteredJobs = selectedJobs.filter(job => job.status !== false)
 
     let roles: string[] = []
     filteredJobs.map(job => {
@@ -24,10 +23,17 @@ export const formatHomeFilter = () => {
         return locations = [...locations, job.location]
     })
 
+    let companies: string[] = []
+    filteredJobs.map(job => {
+        if (companies.find(company => company === job.company.name)) return
+        return companies = [...companies, job.company.name]
+    })
+
     return {
         role: roles,
         field: fields,
-        location: locations
+        location: locations,
+        company: companies,
     }
 }
 
@@ -36,6 +42,7 @@ export const clearFilters = () => {
         title: '',
         role: '',
         field: '',
-        location: ''
+        location: '',
+        company: '',
     }
 }

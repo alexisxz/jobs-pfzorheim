@@ -12,6 +12,7 @@ import { Job } from '../types/Job'
 import { fakeJobs } from '../data/fakeData'
 import JobCard from '../components/JobCard'
 import { clearFilters, formatHomeFilter } from '../helpers/formatHomeFilters'
+import Link from 'next/link'
 
 export default function Home() {
   const [jobs, setJobs] = useState<Job[]>(fakeJobs.filter(job => job.status !== false))
@@ -20,12 +21,13 @@ export default function Home() {
   const [maxJobCards, setMaxJobCards] = useState<number>(5)
 
   //filter
-  const [filtersCategory, setFiltersCategory] = useState(formatHomeFilter)
+  const [filtersCategory, setFiltersCategory] = useState(formatHomeFilter(fakeJobs))
   const [filters, setFilters] = useState({
     title: '',
     role: '',
     field: '',
     location: '',
+    company: '',
   })
 
   useEffect(() => {
@@ -40,9 +42,12 @@ export default function Home() {
   }, [jobCardsQuantity, jobs, maxJobCards])
 
   useEffect(() => {
-    if (!filters.title && !filters.field && !filters.role && !filters.location) return setJobs(fakeJobs.filter(job => job.status !== false))
+    if (!filters.title && !filters.field && !filters.role && !filters.location && !filters.company) return setJobs(fakeJobs.filter(job => job.status !== false))
 
     let newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title))
+
+    //allone filters
+    if (filters.company !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.company.name === filters.company)
 
     if (filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.role === filters.role)
 
@@ -50,13 +55,30 @@ export default function Home() {
 
     if (filters.location !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.location === filters.location)
 
+    // couple filters
     if (filters.role !== '' && filters.field !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.role === filters.role && job.field === filters.field)
 
     if (filters.role !== '' && filters.location !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.role === filters.role && job.location === filters.location)
 
     if (filters.field !== '' && filters.location !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.field === filters.field && job.location === filters.location)
 
-    if (filters.field !== '' && filters.location !== '' && filters.role) newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.field === filters.field && job.location === filters.location && job.role === filters.role)
+    if (filters.role !== '' && filters.company !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.role === filters.role && job.company.name === filters.company)
+
+    if (filters.field !== '' && filters.company !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.field === filters.field && job.company.name === filters.company)
+
+    if (filters.location !== '' && filters.company !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.location === filters.location && job.company.name === filters.company)
+
+    // tripple filters
+    if (filters.field !== '' && filters.location !== '' && filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.field === filters.field && job.location === filters.location && job.role === filters.role)
+
+    if (filters.company !== '' && filters.location !== '' && filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.company.name === filters.company && job.location === filters.location && job.role === filters.role)
+
+    if (filters.company !== '' && filters.field !== '' && filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.company.name === filters.company && job.field === filters.field && job.role === filters.role)
+
+    if (filters.company !== '' && filters.location !== '' && filters.field !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.company.name === filters.company && job.location === filters.location && job.field === filters.field)
+
+    // all filters
+    if (filters.company !== '' && filters.location !== '' && filters.field !== '' && filters.role) newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.company.name === filters.company && job.location === filters.location && job.field === filters.field && job.role === filters.role)
 
     setJobsList(newJobsList)
   }, [filters])
@@ -96,7 +118,8 @@ export default function Home() {
           <div className={styles.container}>
             <div className={styles.picsWrapper}>
               <span>trusted by</span>
-              <Image src={PolyRackLogo} alt='PolyRack logo' />
+              <Link href={"/partner/polyrack"}><div><Image src={PolyRackLogo} alt='PolyRack logo' /></div></Link>
+              <Link href={"/partner/boehmler"}><div><Image src={BoehmlerLogo} alt='Böhmler logo' /></div></Link>
             </div>
           </div>
         </section>
@@ -106,7 +129,7 @@ export default function Home() {
             <div className={styles.filtersWrapper}>
               <div className={styles.searchFilter}>
                 <select name='role' value={filters.role} onChange={e => handleFiltersOnChange(e)}>
-                  <option value="" selected>👩‍🎓 Role</option>
+                  <option value="" selected>👩‍🎓 Einstieg als</option>
                   {filtersCategory?.role.map((item, index) => (
                     <option key={index} value={item}>{item}</option>
                   ))}
@@ -114,7 +137,7 @@ export default function Home() {
               </div>
               <div className={styles.searchFilter}>
                 <select name='field' value={filters.field} onChange={e => handleFiltersOnChange(e)}>
-                  <option value="" selected>🧳 Field</option>
+                  <option value="" selected>🧳 Arbeitsbereiche</option>
                   {filtersCategory?.field.map((item, index) => (
                     <option key={index} value={item}>{item}</option>
                   ))}
@@ -122,14 +145,22 @@ export default function Home() {
               </div>
               <div className={styles.searchFilter}>
                 <select name='location' value={filters.location} onChange={e => handleFiltersOnChange(e)}>
-                  <option value="" selected>🌎 Location</option>
+                  <option value="" selected>🌎 Standort</option>
                   {filtersCategory?.location.map((item, index) => (
                     <option key={index} value={item}>{item}</option>
                   ))}
                 </select>
               </div>
+              <div className={styles.searchFilter}>
+                <select name='company' value={filters.company} onChange={e => handleFiltersOnChange(e)}>
+                  <option value="" selected>🏭 Unternehmen</option>
+                  {filtersCategory?.company.map((item, index) => (
+                    <option key={index} value={item}>{item}</option>
+                  ))}
+                </select>
+              </div>
               <div className={styles.searchFilterCleaning}>
-                <a onClick={() => setFilters(clearFilters)}>Filter zurücksetzen 🕵🏼‍♂️</a>
+                <button onClick={() => setFilters(clearFilters)}>Filter zurücksetzen 🕵🏼‍♂️</button>
               </div>
             </div>
 
@@ -147,7 +178,7 @@ export default function Home() {
         <section className={`${styles.section}`}>
           <div className={styles.container}>
             <div className={styles.moreJobsWrapper}>
-              {filters.title || filters.location || filters.field || filters.role ? <p>Jobs gefunden: {jobsList?.length}</p> : maxJobCards <= jobCardsQuantity ? <button onClick={() => setMaxJobCards(maxJobCards + 5)}>More jobs 🥷</button> : 'All jobs visualized 💃'}
+              {filters.title || filters.location || filters.field || filters.role || filters.company ? <p>Jobs gefunden: {jobsList?.length}</p> : maxJobCards <= jobCardsQuantity ? <button onClick={() => setMaxJobCards(maxJobCards + 5)}>More jobs 🥷</button> : 'All jobs visualized 💃'}
             </div>
           </div>
         </section>

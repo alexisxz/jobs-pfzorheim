@@ -11,7 +11,7 @@ type Props = {
 }
 
 function JobCard({ job }: Props) {
-    const isPartner = job.company.partner
+    const isPartner: boolean = job.company.partner
     const [isExtended, setIsExtended] = useState<string>('none')
     const [appliedCandidate, setAppliedCandidate] = useState<Candidate>({ name: '', email: '', surname: '', phone: '', attachment: '' })
 

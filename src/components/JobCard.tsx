@@ -1,10 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
 import { formatDate } from '../helpers/formatDate'
 import styles from '../styles/Home.module.scss'
 import { Candidate } from '../types/Candidate'
 import { Job } from '../types/Job'
+import { E164Number } from 'libphonenumber-js/types'
 
 type Props = {
     job: Job
@@ -13,7 +16,15 @@ type Props = {
 function JobCard({ job }: Props) {
     const isPartner: boolean = job.company.partner
     const [isExtended, setIsExtended] = useState<string>('none')
+    const [candidateNumber, setCandidateNumber] = useState<E164Number | undefined>()
     const [appliedCandidate, setAppliedCandidate] = useState<Candidate>({ name: '', email: '', surname: '', phone: '', attachment: '' })
+
+    useEffect(() => {
+        if (!candidateNumber) return
+
+        const phoneNumber = candidateNumber.toString()
+        setAppliedCandidate({ ...appliedCandidate, phone: phoneNumber })
+    }, [appliedCandidate, candidateNumber])
 
     //handler
     const handleExtendOnClick = () => {
@@ -134,7 +145,7 @@ function JobCard({ job }: Props) {
                         </div>
                         <div className={styles.applyField}>
                             <label>Kontakt-Telefon</label>
-                            <input type="tel" name='phone' value={appliedCandidate.phone} onChange={event => handleCandidateOnChange(event)} required />
+                            <PhoneInput name='phone' value={appliedCandidate.phone} onChange={setCandidateNumber} required />
                         </div>
                         <div className={styles.applyField}>
                             <label>Lebenslauf (.pdf)</label>

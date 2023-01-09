@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react'
 import { Job } from '../types/Job'
 import { fakeJobs } from '../data/fakeData'
 import JobCard from '../components/JobCard'
-import { formatHomeFilter } from '../helpers/formatHomeFilters'
+import { clearFilters, formatHomeFilter } from '../helpers/formatHomeFilters'
 
 export default function Home() {
   const [jobs, setJobs] = useState<Job[]>(fakeJobs.filter(job => job.status !== false))
@@ -41,6 +41,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!filters.title && !filters.field && !filters.role && !filters.location) return setJobs(fakeJobs.filter(job => job.status !== false))
+
     let newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title))
 
     if (filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.role === filters.role)
@@ -127,7 +128,11 @@ export default function Home() {
                   ))}
                 </select>
               </div>
+              <div className={styles.searchFilterCleaning}>
+                <a onClick={() => setFilters(clearFilters)}>Filter zurücksetzen 🕵🏼‍♂️</a>
+              </div>
             </div>
+
           </div>
         </section>
 
@@ -142,7 +147,7 @@ export default function Home() {
         <section className={`${styles.section}`}>
           <div className={styles.container}>
             <div className={styles.moreJobsWrapper}>
-              {filters.title ? <p>Jobs gefunden: {jobsList?.length}</p> : maxJobCards <= jobCardsQuantity ? <button onClick={() => setMaxJobCards(maxJobCards + 5)}>More jobs 🥷</button> : 'All jobs visualized 💃'}
+              {filters.title || filters.location || filters.field || filters.role ? <p>Jobs gefunden: {jobsList?.length}</p> : maxJobCards <= jobCardsQuantity ? <button onClick={() => setMaxJobCards(maxJobCards + 5)}>More jobs 🥷</button> : 'All jobs visualized 💃'}
             </div>
           </div>
         </section>

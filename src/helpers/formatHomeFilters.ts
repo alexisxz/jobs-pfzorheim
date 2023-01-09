@@ -29,6 +29,13 @@ export const formatHomeFilter = () => {
         field: fields,
         location: locations
     }
+}
 
-
+export const clearFilters = () => {
+    return {
+        title: '',
+        role: '',
+        field: '',
+        location: ''
+    }
 }

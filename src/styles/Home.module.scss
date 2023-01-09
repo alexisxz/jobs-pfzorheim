@@ -104,6 +104,7 @@
 .filtersWrapper {
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
 
   .searchFilter {
     select {
@@ -114,7 +115,20 @@
       box-shadow: 5px 5px 5px -5px #888;
     }
   }
+
+  .searchFilterCleaning {
+    margin-top: 1rem;
+
+    a {
+      &:hover {
+        color: var(--color-primary);
+        cursor: pointer;
+      }
+    }
+  }
 }
+
+
 
 .moreJobsWrapper {
   text-align: center;

@@ -4,20 +4,20 @@ import { Job } from "../types/Job";
 
 export const fakeCompanies: Company[] = [
     {
+        id: 1,
         name: 'Böhmler GmbH',
         image: 'https://www.boehmler-drehteile.de/wp-content/uploads/2014/12/B%C3%B6hmler-Logo-Retina.png',
         partner: true,
         primaryColor: '#000000',
         secondaryColor: '#AF1F29',
-        appliedEmails: []
     },
     {
+        id: 2,
         name: 'POLYRACK Tech-Group',
         image: 'https://www.berufaktuell-pforzheim.de/wp-content/uploads/2022/01/6e13784c-4861-4a06-b2d1-3b6c2c1c9835-1024x741.jpg',
         partner: true,
         primaryColor: '#5A6873',
         secondaryColor: '#0BA1E3',
-        appliedEmails: []
     },
 ]
 

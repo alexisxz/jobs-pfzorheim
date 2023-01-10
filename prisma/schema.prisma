@@ -6,6 +6,55 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Company {
+  id             BigInt  @id @default(autoincrement())
+  name           String  @unique
+  image          String
+  partner        Boolean
+  primaryColor   String
+  secondaryColor String
+  Job            Job[]
+}
+
+model Task {
+  id    BigInt  @id @default(autoincrement())
+  name  String
+  Job   Job?    @relation(fields: [jobId], references: [id])
+  jobId String?
+}
+
+model Benefit {
+  id    BigInt  @id @default(autoincrement())
+  name  String
+  Job   Job?    @relation(fields: [jobId], references: [id])
+  jobId String?
+}
+
+model AppliedEmail {
+  id    BigInt  @id @default(autoincrement())
+  name  String
+  Job   Job?    @relation(fields: [jobId], references: [id])
+  jobId String?
+}
+
+model Job {
+  id               String         @id @default(cuid())
+  title            String
+  shortDescription String?
+  company          Company        @relation(fields: [companyId], references: [id])
+  companyId        BigInt
+  status           Boolean
+  location         String
+  field            String
+  role             String
+  postedDate       DateTime
+  startingDate     DateTime?
+  workingTime      String
+  tasks            Task[]
+  benefits         Benefit[]
+  emailsApplied    AppliedEmail[]
 }

@@ -112,6 +112,11 @@
     height: 100px;
     width: 150px;
     object-fit: contain;
+    opacity: 50%;
+
+    &:hover {
+      opacity: 100%;
+    }
   }
 }
 
@@ -119,6 +124,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  justify-content: center;
 
   .searchFilter {
 
@@ -235,13 +241,13 @@
 
     .jobCardExtensionHeading {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-evenly;
       align-items: center;
 
       .jobCardExtensionHeadingInfos {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 4rem;
 
         .heading {
           text-align: center;
@@ -309,6 +315,7 @@
 
     .jobTopics {
       margin-bottom: 1rem;
+      margin-left: 1rem;
 
       h4 {
         font-weight: 600;

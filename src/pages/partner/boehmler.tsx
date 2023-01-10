@@ -44,21 +44,21 @@ export default function Boehmler() {
 
         if (!filters.title && !filters.field && !filters.role && !filters.location) return setJobs(allJobs.filter(job => job.status !== false))
 
-        let newJobsList = allJobs.filter(job => job.status !== false && job.title.includes(filters.title))
+        let newJobsList = allJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)))
 
-        if (filters.role !== '') newJobsList = allJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.role === filters.role)
+        if (filters.role !== '') newJobsList = allJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role)
 
-        if (filters.field !== '') newJobsList = allJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.field === filters.field)
+        if (filters.field !== '') newJobsList = allJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field)
 
-        if (filters.location !== '') newJobsList = allJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.location === filters.location)
+        if (filters.location !== '') newJobsList = allJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.location === filters.location)
 
-        if (filters.role !== '' && filters.field !== '') newJobsList = allJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.role === filters.role && job.field === filters.field)
+        if (filters.role !== '' && filters.field !== '') newJobsList = allJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && job.field === filters.field)
 
-        if (filters.role !== '' && filters.location !== '') newJobsList = allJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.role === filters.role && job.location === filters.location)
+        if (filters.role !== '' && filters.location !== '') newJobsList = allJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && job.location === filters.location)
 
-        if (filters.field !== '' && filters.location !== '') newJobsList = allJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.field === filters.field && job.location === filters.location)
+        if (filters.field !== '' && filters.location !== '') newJobsList = allJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && job.location === filters.location)
 
-        if (filters.field !== '' && filters.location !== '' && filters.role) newJobsList = allJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.field === filters.field && job.location === filters.location && job.role === filters.role)
+        if (filters.field !== '' && filters.location !== '' && filters.role) newJobsList = allJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && job.location === filters.location && job.role === filters.role)
 
         setJobsList(newJobsList.sort((a, b) => a.postedDate.getTime() - b.postedDate.getTime()))
     }, [filters])
@@ -89,7 +89,7 @@ export default function Boehmler() {
                             <h5>Powered by <strong>stirner/stirner</strong></h5>
                             <Image src={StirnerLogo} alt='Stirner logo' className={styles.stirnerLogo} />
                             <div className={styles.inputFilter}>
-                                <input type="text" placeholder='🔎 Search job (e.g. Mechaniker, Ausbildung, etc...)' name='title' value={filters.title} onChange={e => handleFiltersOnChange(e)} />
+                                <input type="text" placeholder='🔎 Search job by JobID or by title (z.B. Mechaniker, Ausbildung, etc...)' name='title' value={filters.title} onChange={e => handleFiltersOnChange(e)} />
                             </div>
                         </div>
                     </div>

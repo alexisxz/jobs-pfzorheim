@@ -44,41 +44,41 @@ export default function Home() {
   useEffect(() => {
     if (!filters.title && !filters.field && !filters.role && !filters.location && !filters.company) return setJobs(fakeJobs.filter(job => job.status !== false))
 
-    let newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title))
+    let newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)))
 
     //allone filters
-    if (filters.company !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.company.name === filters.company)
+    if (filters.company !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.company.name === filters.company)
 
-    if (filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.role === filters.role)
+    if (filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role)
 
-    if (filters.field !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.field === filters.field)
+    if (filters.field !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field)
 
-    if (filters.location !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.location === filters.location)
+    if (filters.location !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.location === filters.location)
 
     // couple filters
-    if (filters.role !== '' && filters.field !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.role === filters.role && job.field === filters.field)
+    if (filters.role !== '' && filters.field !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && job.field === filters.field)
 
-    if (filters.role !== '' && filters.location !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.role === filters.role && job.location === filters.location)
+    if (filters.role !== '' && filters.location !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && job.location === filters.location)
 
-    if (filters.field !== '' && filters.location !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.field === filters.field && job.location === filters.location)
+    if (filters.field !== '' && filters.location !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && job.location === filters.location)
 
-    if (filters.role !== '' && filters.company !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.role === filters.role && job.company.name === filters.company)
+    if (filters.role !== '' && filters.company !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && job.company.name === filters.company)
 
-    if (filters.field !== '' && filters.company !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.field === filters.field && job.company.name === filters.company)
+    if (filters.field !== '' && filters.company !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && job.company.name === filters.company)
 
-    if (filters.location !== '' && filters.company !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.location === filters.location && job.company.name === filters.company)
+    if (filters.location !== '' && filters.company !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.location === filters.location && job.company.name === filters.company)
 
     // tripple filters
-    if (filters.field !== '' && filters.location !== '' && filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.field === filters.field && job.location === filters.location && job.role === filters.role)
+    if (filters.field !== '' && filters.location !== '' && filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && job.location === filters.location && job.role === filters.role)
 
-    if (filters.company !== '' && filters.location !== '' && filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.company.name === filters.company && job.location === filters.location && job.role === filters.role)
+    if (filters.company !== '' && filters.location !== '' && filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.company.name === filters.company && job.location === filters.location && job.role === filters.role)
 
-    if (filters.company !== '' && filters.field !== '' && filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.company.name === filters.company && job.field === filters.field && job.role === filters.role)
+    if (filters.company !== '' && filters.field !== '' && filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.company.name === filters.company && job.field === filters.field && job.role === filters.role)
 
-    if (filters.company !== '' && filters.location !== '' && filters.field !== '') newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.company.name === filters.company && job.location === filters.location && job.field === filters.field)
+    if (filters.company !== '' && filters.location !== '' && filters.field !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.company.name === filters.company && job.location === filters.location && job.field === filters.field)
 
     // all filters
-    if (filters.company !== '' && filters.location !== '' && filters.field !== '' && filters.role) newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.company.name === filters.company && job.location === filters.location && job.field === filters.field && job.role === filters.role)
+    if (filters.company !== '' && filters.location !== '' && filters.field !== '' && filters.role) newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.company.name === filters.company && job.location === filters.location && job.field === filters.field && job.role === filters.role)
 
     setJobsList(newJobsList.sort((a, b) => a.postedDate.getTime() - b.postedDate.getTime()))
   }, [filters])
@@ -109,7 +109,7 @@ export default function Home() {
               <h5>Powered by <strong>stirner/stirner</strong></h5>
               <Image src={StirnerLogo} alt='Stirner logo' className={styles.stirnerLogo} />
               <div className={styles.inputFilter}>
-                <input type="text" placeholder='🔎 Search job (e.g. Mechaniker, Ausbildung, etc...)' name='title' value={filters.title} onChange={e => handleFiltersOnChange(e)} />
+                <input type="text" placeholder='🔎 Search job by JobID or by title (z.B. Mechaniker, Ausbildung, etc...)' name='title' value={filters.title} onChange={e => handleFiltersOnChange(e)} />
               </div>
             </div>
           </div>

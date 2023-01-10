@@ -270,6 +270,29 @@
         border: 1px solid var(--color-light);
         max-width: 200px;
 
+        .copyJobIdClipboard {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          border: 1px solid var(--color-light);
+          margin-bottom: 1rem;
+
+          button {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+
+            &:hover {
+              opacity: 80%;
+              cursor: pointer;
+            }
+
+            &:focus {
+              background-color: greenyellow;
+              color: var(--color-black);
+            }
+          }
+        }
+
 
         &:hover {
           border-color: var(--color-primary);

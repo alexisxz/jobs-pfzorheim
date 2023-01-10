@@ -3,11 +3,13 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
-import { formatDate } from '../helpers/formatDate'
 import styles from '../styles/Home.module.scss'
 import { Candidate } from '../types/Candidate'
 import { Job } from '../types/Job'
 import { E164Number } from 'libphonenumber-js/types'
+
+//helpers
+import { formatDate } from '../helpers/formatDate'
 
 type Props = {
     job: Job
@@ -95,7 +97,11 @@ function JobCard({ job }: Props) {
                         <img alt={job.company.name} src={job.company.image} />
                         <h3>{job.company.name}</h3>
                         {job.company.partner ? <h5>Partner ✅</h5> : ''}
-                        <a href={`#${job.title + job.company + job.location}`} style={{ color: '#fff' }}><button className={styles.btnPrimary}>Jetzt bewerben</button></a>
+                        <div className={styles.copyJobIdClipboard}>
+                            <button onClick={() => { navigator.clipboard.writeText(job.id) }}>Copy JobID to clipboard</button>
+                            <input value={job.id} />
+                        </div>
+                        <a href={`#${job.id}`} style={{ color: '#fff' }}><button className={styles.btnPrimary}>Jetzt bewerben</button></a>
                     </div>
                 </div>
                 <div className={styles.jobTopics} style={{ marginTop: '1rem' }}>
@@ -125,7 +131,7 @@ function JobCard({ job }: Props) {
                         ))}
                     </ul>
                 </div>
-                <div className={styles.applyJobForm} id={job.title + job.company + job.location}>
+                <div className={styles.applyJobForm} id={job.id}>
                     <h4 style={{ fontWeight: 600 }}> Jetzt bewerben</h4>
                     <form action="https://formsubmit.co/faf324c9c5baeb920124737601280b10" method="POST" encType="multipart/form-data">
                         <div style={{ display: 'flex', gap: '1rem' }}>

@@ -73,6 +73,10 @@
         border-radius: 10px;
         padding: 0 10px;
         box-shadow: 5px 5px 5px 0px #888;
+
+        &:focus {
+          opacity: 80%;
+        }
       }
 
       ::placeholder {
@@ -122,6 +126,12 @@
       border: 1px solid var(--color-light);
       border-radius: 10px;
       box-shadow: 5px 5px 5px -5px #888;
+
+      &:hover {
+        opacity: 80%;
+        background-color: var(--color-light);
+        cursor: pointer;
+      }
     }
   }
 

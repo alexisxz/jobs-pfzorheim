@@ -37,7 +37,7 @@ export default function Home() {
       getJobs.push(jobs[i])
     }
 
-    setJobsList(getJobs)
+    setJobsList(getJobs.sort((a, b) => a.postedDate.getTime() - b.postedDate.getTime()))
 
   }, [jobCardsQuantity, jobs, maxJobCards])
 

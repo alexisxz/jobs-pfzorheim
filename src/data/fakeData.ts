@@ -43,7 +43,7 @@ export const fakeJobs: Job[] = [
         location: 'Pfzorheim',
         field: 'Produktion, Montage & Qualität',
         role: 'Berufserfahrene*r',
-        postedDate: new Date(),
+        postedDate: new Date('January.02.2023'),
         startingDate: new Date(),
         workingTime: 'Vollzeit',
         tasks: [],

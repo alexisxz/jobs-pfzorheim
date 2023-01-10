@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Company {
-  id             BigInt  @id @default(autoincrement())
+  id             Int     @id @default(autoincrement())
   name           String  @unique
   image          String
   partner        Boolean
@@ -21,21 +21,21 @@ model Company {
 }
 
 model Task {
-  id    BigInt  @id @default(autoincrement())
+  id    Int     @id @default(autoincrement())
   name  String
   Job   Job?    @relation(fields: [jobId], references: [id])
   jobId String?
 }
 
 model Benefit {
-  id    BigInt  @id @default(autoincrement())
+  id    Int     @id @default(autoincrement())
   name  String
   Job   Job?    @relation(fields: [jobId], references: [id])
   jobId String?
 }
 
 model AppliedEmail {
-  id    BigInt  @id @default(autoincrement())
+  id    Int     @id @default(autoincrement())
   name  String
   Job   Job?    @relation(fields: [jobId], references: [id])
   jobId String?
@@ -46,7 +46,7 @@ model Job {
   title            String
   shortDescription String?
   company          Company        @relation(fields: [companyId], references: [id])
-  companyId        BigInt
+  companyId        Int
   status           Boolean
   location         String
   field            String

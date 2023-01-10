@@ -51,7 +51,7 @@ model Job {
   location         String
   field            String
   role             String
-  postedDate       DateTime
+  postedDate       DateTime       @default(now())
   startingDate     DateTime?
   workingTime      String
   tasks            Task[]

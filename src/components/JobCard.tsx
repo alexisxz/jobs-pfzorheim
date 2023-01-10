@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 import styles from '../styles/Home.module.scss'
-import { Candidate } from '../types/Candidate'
+import { Candidate } from '../types/AppliedEmail'
 import { Job } from '../types/Job'
 import { E164Number } from 'libphonenumber-js/types'
 

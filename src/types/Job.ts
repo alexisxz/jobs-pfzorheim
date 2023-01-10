@@ -3,6 +3,7 @@ import { Company } from "./Company"
 // there are collections for: Company, location, field, role, workingTime
 
 export type Job = {
+    id: string,
     title: string,
     shortDescription?: string,
     company: Company,

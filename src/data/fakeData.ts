@@ -1,6 +1,6 @@
+import cuid from "cuid";
 import { Company } from "../types/Company";
 import { Job } from "../types/Job";
-
 
 export const fakeCompanies: Company[] = [
     {
@@ -23,6 +23,7 @@ export const fakeCompanies: Company[] = [
 
 export const fakeJobs: Job[] = [
     {
+        id: cuid(),
         title: 'Einkäufer (m/w/d)',
         company: fakeCompanies[0],
         status: true,
@@ -37,6 +38,7 @@ export const fakeJobs: Job[] = [
         benefits: ['flexible Arbeitszeiten', 'nach Einarbeitung 1 Tag Homeoffice pro Woche möglich']
     },
     {
+        id: cuid(),
         title: 'Zerspanungsmechaniker (m/w/d) für CNC-Einspindeldrehtautomaten (Star, Tornos)',
         company: fakeCompanies[0],
         status: true,
@@ -52,6 +54,7 @@ export const fakeJobs: Job[] = [
         emailsApplied: ['test@email.com']
     },
     {
+        id: cuid(),
         title: 'Zerspanungsmechaniker (m/w/d) für CNC-Ringdrehautomaten (escomatic)',
         company: fakeCompanies[0],
         status: true,
@@ -66,6 +69,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Arbeit im Einschichtbetrieb mit flexiblen Arbeitszeiten', 'flexible Urlaubsplanung über das gesamte Kalenderjahr', 'klimatisierte Arbeitsplätze', 'überdurchschnittliche Sozialleistungen und Sonderzahlungen', 'Firmenparkplatz', 'Jobrad', 'gutes Betriebsklima', 'Gesundheitsmanagement', 'Lieferdienst für Vesper und Mittagessen']
     },
     {
+        id: cuid(),
         title: 'Zerspanungsmechaniker (m/w/d) für kurvengesteuerte Drehautomaten (Tornos, Gildemeister)',
         company: fakeCompanies[0],
         status: true,
@@ -79,6 +83,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Arbeit im Einschichtbetrieb mit flexiblen Arbeitszeiten', 'flexible Urlaubsplanung über das gesamte Kalenderjahr', 'klimatisierte Arbeitsplätze', 'überdurchschnittliche Sozialleistungen und Sonderzahlungen', 'Firmenparkplatz', 'Jobrad', 'gutes Betriebsklima', 'Gesundheitsmanagement', 'Lieferdienst für Vesper und Mittagessen', 'und vieles mehr finden Sie unter „Böhmler als Arbeitgeber“']
     },
     {
+        id: cuid(),
         title: 'CNC-Fräser / Zerspanungsmechaniker (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -92,6 +97,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Mitarbeiter für die Qualitätssicherung (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -105,6 +111,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Verfahrensmechaniker für Beschichtungstechnik / Pulverbeschichter (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -118,6 +125,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Fachkraft für Lagerlogistik mit Führerschein Klasse CE (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -131,6 +139,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Anlernkräfte Montage Systemtechnik (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -144,6 +153,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Studentische Aushilfe (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -157,6 +167,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Projektmanager für Thermoplast- / Spritzgussteile (m/w/d)',
         shortDescription: 'Sie betreuen die Einführung und Umsetzung neuer Projekte, Änderungen und Optimierungen – vom Projektanlauf bis zur Serienbetreuung. Sie begleiten den Produktentstehungsprozess gemäß Kunden- und internen Vorgaben und arbeiten eng mit den Kunden hinsichtlich der Bauteilentwicklung bis zur Erreichung der Serienreife zusammen. Die Einhaltung der Produktqualitätsvorgaben, die termingerechte Projektumsetzung und die Erreichung der Serienfreigabe bzw. -reife sind Ihre Ziele.',
         company: fakeCompanies[1],
@@ -171,6 +182,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Kunststoffingenieur/-techniker (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -184,6 +196,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'SAP Inhouse Consultant (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -197,6 +210,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Mitarbeiter für den Empfang (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -210,6 +224,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Elektriker / Meister Elektrotechnik für Haustechnik (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -223,6 +238,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Mechaniker (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -236,6 +252,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Einrichter im Stanz-Laser-Bereich (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -249,6 +266,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Studentische Aushilfe (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -262,6 +280,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Quereinsteiger (m/w/d) zur Verstärkung unseres Teams in der mechanischen Fertigung (Grundlage: technische / handwerkliche Ausbildung)',
         company: fakeCompanies[1],
         status: true,
@@ -275,6 +294,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Schweißer (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -288,6 +308,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Einsteller / Einrichter Kunststofftechnik (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -301,6 +322,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Mechaniker (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -314,6 +336,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Quereinsteiger (m/w/d) zur Verstärkung unseres Teams in der mechanischen Fertigung (Grundlage: technische / handwerkliche Ausbildung)',
         company: fakeCompanies[1],
         status: true,
@@ -327,6 +350,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Schweißer (m/w/d)',
         company: fakeCompanies[1],
         status: true,
@@ -340,6 +364,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Ausbildung zum Konstruktionsmechaniker (m/w/d)',
         shortDescription: 'In deiner Ausbildung bilden wir dich im fachgerechten Umgang mit manuellen und maschinellen Fertigungsverfahren aus. Du erwirbst alle notwendigen Kenntnisse zur Herstellung von Metallkonstruktionen aus Blechen und Profilen und hast die Möglichkeit, mit kreativen Ideen auf die innovative Entwicklung unseres Unternehmens Einfluss zu nehmen. Du passt zu uns, wenn du ein hohes Maß an technischem Interesse mitbringst, motiviert und flexibel bist und die Werkrealschule mit überzeugenden Leistungen absolviert hast.',
         company: fakeCompanies[1],
@@ -355,6 +380,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Ausbildung zum Werkzeugmechaniker (m/w/d)',
         shortDescription: 'Während der ersten beiden Ausbildungsjahre besuchst du als Vorschüler eine Vollzeitschule (Heinrich-Wieland-Schule, Pforzheim). Im Anschluss an die Abschlussprüfung Teil 1 erfolgt die praxisbezogene Ausbildung in unserem modernen Werkzeugbau. Hier erlernst du die Grundfertigkeiten der Metallbearbeitung, wie z. B. Feilen, Bohren, Drehen, Fräsen und Schleifen. Dies ermöglicht bereits die Herstellung von ersten Bauteilen für den Werkzeugbau. Im Bereich Werkzeugbau werden deine Grundkenntnisse vertieft. Du lernst technische Zeichnungen auszuwerten, entsprechende Werkzeuge herzustellen und instand zu setzen. Du rüstest und bedienst Anlagen und Maschinen und wirst in die Qualitätssicherung eingewiesen. Wenn du Interesse an Maschinen und Anlagen, Werkzeugen, Produktionsprozessen und ein gutes räumliches Vorstellungsvermögen hast – dann Bewirb Dich jetzt!',
         company: fakeCompanies[1],
@@ -370,6 +396,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Ausbildung zur Fachkraft für Metalltechnik (m/w/d)',
         shortDescription: 'In deiner Ausbildung bilden wir dich im fachgerechten Umgang mit manuellen und maschinellen Fertigungsverfahren aus. Du erwirbst alle notwendigen Kenntnisse zur Herstellung von Metallkonstruktionen aus Blechen und Profilen und hast die Möglichkeit, mit kreativen Ideen auf die innovative Entwicklung unseres Unternehmens Einfluss zu nehmen.',
         company: fakeCompanies[1],
@@ -385,6 +412,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Ausbildung zum Verfahrensmechaniker (m/w/d)',
         shortDescription: 'Kunststoffe und Kautschuk sind aus der heutigen Zeit nicht mehr wegzudenken. Bevor es mit der Produktion von qualitativ hochwertigen Kunststoffen losgeht, wählst du die Materialien und Hilfsstoffe aus. Du programmierst die Anlage, legst den Ablauf, Druck, Temperatur und Geschwindigkeiten genau fest und befüllst die Maschine. Du sorgst dafür, dass alles rundläufst, hast die laufende Produktion immer im Blick und führst regelmäßig Qualitätsprüfungen durch.',
         company: fakeCompanies[1],
@@ -400,6 +428,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Ausbildung zum Zerspanungsmechaniker (m/w/d)',
         shortDescription: 'In deiner Ausbildung zählen zu deinen Hauptaufgaben Fräsen, Drehen und Produzieren von Teilen aus Stahl, Aluminium oder anderen Materialien. Dabei bedienst und programmierst du modernste Dreh- und Fräsmaschinen. Du erwirbst alle notwendigen Kenntnisse zur Herstellung an Metallkonstruktionen aus Blechen und Profilen und hast die Möglichkeit, mit kreativen Ideen auf die innovative Entwicklung unseres Unternehmens Einfluss zu nehmen. Du passt zu uns, wenn du ein hohes Maß an technischem Interesse mitbringst, motiviert und flexibel bist und einen guten Hauptschulabschluss mit überzeugenden Leistungen absolviert hast.',
         company: fakeCompanies[1],
@@ -415,6 +444,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Ausbildung zum Medientechnologe Druck (m/w/d)',
         shortDescription: 'Als Medientechnologe richtest du die Druckmaschinen der unterschiedlichen Druckverfahren wie Sieb-, Tampon- und HD-Druck, sowie des Lasergravierens ein. Du bereitest Druckdaten als auch -vorlagen auf, steuerst den kompletten Druckprozess und sicherst somit die Qualität des Endprodukts. Hierzu werden dir alle Kenntnisse zur Vorbereitung der Maschinen, sowie den benötigten Materialien (Druckfilme, Klischees, Siebrahmen etc.) vermittelt um die unterschiedlichsten Materialien, nach entsprechenden Farb- und Qualitätsvorgaben, zu bedrucken.',
         company: fakeCompanies[1],
@@ -430,6 +460,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Ausbildung zum Industriemechaniker (m/w/d)',
         shortDescription: 'In deiner Ausbildung lernst Du alle Techniken der Metallbearbeitung wie Schleifen, Fräsen oder Feilen. Du erwirbst alle notwendigen Kenntnisse zur Herstellung von Werkstücken und Bauteilen. Du hast außerdem die Möglichkeit, mit kreativen Ideen auf die innovative Entwicklung unseres Unternehmens Einfluss zu nehmen.Du passt zu uns, wenn du ein hohes Maß an technischem Interesse mitbringst, motiviert und flexibel bist und einen guten Werkrealschulabschluss mit überzeugenden Leistungen absolviert hast.',
         company: fakeCompanies[1],
@@ -445,6 +476,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Ausbildung zum Industriekaufmann (m/w/d)',
         shortDescription: 'Während der praktischen Ausbildungsphasen durchläufst du alle für den Industriekaufmann (m/w/d) wesentlichen Fachabteilungen. Du wirst aber nicht nur in den verwaltenden und produktionsnahen Abteilungen wie Einkauf, Vertrieb Inland und Ausland, Buchhaltung und Personalwesen ausgebildet, sondern wirst auch unseren Produktionsbereich kennenlernen. In den Fachabteilungen wirst du durch die verschiedenen Abläufe und Prozesse von einem Ausbildungsbeauftragten geführt. Wir erwarten von dir eine gute Fachhochschulreife, sowie Spaß am Umgang mit Menschen, Verantwortungsbewusstsein, Engagement und Motivation.',
         company: fakeCompanies[1],
@@ -460,6 +492,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Ausbildung zum Technischen Produktdesigner (m/w/d)',
         shortDescription: 'Sie entwickeln Produkte unter Einsatz modernster Technologien. Zu Ihren Aufgaben gehört das Detaillieren und Ändern von Zeichnungen sowie das Erstellen von 3D-Konstruktionen. Sie arbeiten dabei häufig mit 3D-CAD-Verfahren. In der Berufsschule werden neben den allgemeinbildenden Fächern, die für Produktdesigner relevanten Lernfelder unterrichtet, wie zum Beispiel das Erstellen von Bauteilen und Baugruppen computerunterstützt in 3D oder wie eine Produktentwicklung kundenorientiert ausgeführt wird.',
         company: fakeCompanies[1],
@@ -475,6 +508,7 @@ export const fakeJobs: Job[] = [
         benefits: ['Sprachkurse (Coronabedingte Einschränkungen möglich)', 'Betriebliches gesundheits-management: board', 'Mitarbeiter-empfehlungs-programm', 'Betriebliche altersvorsorge', 'Snack- und essensangebote (Coronabedingte Einschränkungen möglich)', 'Regelmässige firmen- und team-events']
     },
     {
+        id: cuid(),
         title: 'Ausbildung zum Industriekaufmann - Zusatzqualifikation Internationales Marketing / Außenhandel (m/w/d)',
         shortDescription: 'Während der praktischen Ausbildungsphasen durchläufst du alle für den Industriekaufmann - Zusatzqualifikation Internationales Marketing / Außenhandel (m/w/d) wesentlichen Fachabteilungen. Du wirst aber nicht nur in den verwaltenden und produktionsnahen Abteilungen wie Einkauf, Vertrieb Inland und Ausland, Buchhaltung und Personalwesen ausgebildet, sondern wirst auch unseren Produktionsbereich kennenlernen. In den Fachabteilungen wirst du durch die verschiedenen Abläufe und Prozesse von einem Ausbildungsbeauftragten geführt. Zusätzlich werden in der Berufsschule die beiden Zusatzfächer Außenhandel und Spanisch unterrichtet.',
         company: fakeCompanies[1],

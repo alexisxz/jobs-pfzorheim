@@ -98,7 +98,7 @@ function JobCard({ job }: Props) {
                         <h3>{job.company.name}</h3>
                         {job.company.partner ? <h5>Partner ✅</h5> : ''}
                         <div className={styles.copyJobIdClipboard}>
-                            <button onClick={() => { navigator.clipboard.writeText(job.id) }}>Copy JobID to clipboard</button>
+                            <button onClick={() => { navigator.clipboard.writeText(job.id) }}>JobID kopieren</button>
                             <input value={job.id} />
                         </div>
                         <a href={`#${job.id}`} style={{ color: '#fff' }}><button className={styles.btnPrimary}>Jetzt bewerben</button></a>

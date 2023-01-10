@@ -35,7 +35,7 @@ export default function PolyRack() {
             getJobs.push(jobs[i])
         }
 
-        setJobsList(getJobs)
+        setJobsList(getJobs.sort((a, b) => a.postedDate.getTime() - b.postedDate.getTime()))
 
     }, [jobCardsQuantity, jobs, maxJobCards])
 
@@ -60,7 +60,7 @@ export default function PolyRack() {
 
         if (filters.field !== '' && filters.location !== '' && filters.role) newJobsList = allJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.field === filters.field && job.location === filters.location && job.role === filters.role)
 
-        setJobsList(newJobsList)
+        setJobsList(newJobsList.sort((a, b) => a.postedDate.getTime() - b.postedDate.getTime()))
     }, [filters])
 
     // handler

@@ -80,7 +80,7 @@ export default function Home() {
     // all filters
     if (filters.company !== '' && filters.location !== '' && filters.field !== '' && filters.role) newJobsList = fakeJobs.filter(job => job.status !== false && job.title.includes(filters.title) && job.company.name === filters.company && job.location === filters.location && job.field === filters.field && job.role === filters.role)
 
-    setJobsList(newJobsList)
+    setJobsList(newJobsList.sort((a, b) => a.postedDate.getTime() - b.postedDate.getTime()))
   }, [filters])
 
   // handler

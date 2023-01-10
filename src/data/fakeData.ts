@@ -12,7 +12,7 @@ export const fakeCompanies: Company[] = [
         appliedEmails: []
     },
     {
-        name: 'POLYRACK Electronic-Aufbausysteme GmbH',
+        name: 'POLYRACK Tech-Group',
         image: 'https://www.berufaktuell-pforzheim.de/wp-content/uploads/2022/01/6e13784c-4861-4a06-b2d1-3b6c2c1c9835-1024x741.jpg',
         partner: true,
         primaryColor: '#5A6873',

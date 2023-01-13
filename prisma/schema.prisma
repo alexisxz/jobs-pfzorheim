@@ -20,20 +20,6 @@ model Company {
   Job            Job[]
 }
 
-model Task {
-  id    Int     @id @default(autoincrement())
-  name  String
-  Job   Job?    @relation(fields: [jobId], references: [id])
-  jobId String?
-}
-
-model Benefit {
-  id    Int     @id @default(autoincrement())
-  name  String
-  Job   Job?    @relation(fields: [jobId], references: [id])
-  jobId String?
-}
-
 model AppliedEmail {
   id    Int     @id @default(autoincrement())
   name  String
@@ -54,7 +40,8 @@ model Job {
   postedDate       DateTime       @default(now())
   startingDate     DateTime?
   workingTime      String
-  tasks            Task[]
-  benefits         Benefit[]
+  tasks            String
+  benefits         String
   emailsApplied    AppliedEmail[]
+  profile          String
 }

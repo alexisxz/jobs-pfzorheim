@@ -4,19 +4,31 @@ import { useEffect, useState } from 'react'
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 import styles from '../styles/Home.module.scss'
-import { Candidate } from '../types/AppliedEmail'
-import { Job } from '../types/Job'
 import { E164Number } from 'libphonenumber-js/types'
 
 //helpers
 import { formatDate } from '../helpers/formatDate'
+import { AppliedEmail, Company, Job } from '@prisma/client'
 
 type Props = {
-    job: Job
+    job: Job,
+    companies: Company[],
+    appliedEmails: AppliedEmail[],
 }
 
-function JobCard({ job }: Props) {
-    const isPartner: boolean = job.company.partner
+type Candidate = {
+    name: string,
+    surname: string,
+    phone: string,
+    attachment: string,
+    email: string,
+}
+
+function JobCard({ job, companies, appliedEmails }: Props) {
+    const isPartner: boolean | undefined = companies.find(company => company.id === job.companyId)?.partner
+    const jobCompany: Company | undefined = companies.find(company => company.id === job.companyId)
+    const jobEmailsApplied: AppliedEmail[] = appliedEmails.filter(email => email.jobId === job.id)
+
     const [isExtended, setIsExtended] = useState<string>('none')
     const [candidateNumber, setCandidateNumber] = useState<E164Number | undefined>()
     const [appliedCandidate, setAppliedCandidate] = useState<Candidate>({ name: '', email: '', surname: '', phone: '', attachment: '' })
@@ -44,7 +56,7 @@ function JobCard({ job }: Props) {
             <div className={`${styles.jobCardInfos} ${isPartner ? styles.partnerCompany : ''}`}>
                 <div className={styles.jobCardTitle} onClick={handleExtendOnClick}>
                     <a><h2>{job.title}</h2></a>
-                    {isExtended === 'none' ? <h5>{job.company.name} ↓</h5> : <h5>{job.company.name} ↑</h5>}
+                    {isExtended === 'none' ? <h5>{jobCompany?.name} ↓</h5> : <h5>{jobCompany?.name} ↑</h5>}
                 </div>
                 <div className={styles.jobCardParagraph}>
                     <h5>Arbeitsbereiche</h5>
@@ -63,7 +75,7 @@ function JobCard({ job }: Props) {
                 <div className={styles.jobCardExtensionHeading}>
                     <div className={styles.jobCardExtensionHeadingInfos}>
                         <div className={styles.heading}>
-                            <h4>{job.company.name} is hiring</h4>
+                            <h4>{jobCompany?.name} is hiring</h4>
                             <h3>{job.title}</h3>
                         </div>
                         <div className={styles.jobInfos}>
@@ -89,14 +101,14 @@ function JobCard({ job }: Props) {
                             </div>
                             <div>
                                 <h5>🏭 Rechtseinheit</h5>
-                                <h4>{job.company.name}</h4>
+                                <h4>{jobCompany?.name}</h4>
                             </div>
                         </div>
                     </div>
                     <div className={styles.companyInfos}>
-                        <img alt={job.company.name} src={job.company.image} />
-                        <h3>{job.company.name}</h3>
-                        {job.company.partner ? <h5>Partner ✅</h5> : ''}
+                        <img alt={jobCompany?.name} src={jobCompany?.image} />
+                        <h3>{jobCompany?.name}</h3>
+                        {jobCompany?.partner ? <h5>Partner ✅</h5> : ''}
                         <div className={styles.copyJobIdClipboard}>
                             <button onClick={() => { navigator.clipboard.writeText(job.id) }}>JobID kopieren</button>
                             <input value={job.id} />
@@ -109,27 +121,15 @@ function JobCard({ job }: Props) {
                 </div>
                 <div className={styles.jobTopics}>
                     <h4>Ihre Aufgaben:</h4>
-                    <ul>
-                        {job.tasks.map((task, index) => (
-                            <li key={index}>{task}</li>
-                        ))}
-                    </ul>
+                    <p>{job.tasks}</p>
                 </div>
                 <div className={styles.jobTopics}>
                     <h4>Sie bieten:</h4>
-                    <ul>
-                        {job.profile.map((task, index) => (
-                            <li key={index}>{task}</li>
-                        ))}
-                    </ul>
+                    <p>{job.profile}</p>
                 </div>
                 <div className={styles.jobTopics}>
                     <h4>Wir bieten:</h4>
-                    <ul>
-                        {job.benefits.map((task, index) => (
-                            <li key={index}>{task}</li>
-                        ))}
-                    </ul>
+                    <p>{job.benefits}</p>
                 </div>
                 <div className={styles.applyJobForm} id={job.id}>
                     <h4 style={{ fontWeight: 600 }}> Jetzt bewerben</h4>
@@ -147,7 +147,7 @@ function JobCard({ job }: Props) {
                         <div className={styles.applyField}>
                             <label>Email</label>
                             <input type="email" name='email' value={appliedCandidate.email} onChange={event => handleCandidateOnChange(event)} required />
-                            {job.emailsApplied?.find(email => email === appliedCandidate.email) ? <code style={{ color: 'red' }}>This email already applied for this job</code> : ''}
+                            {jobEmailsApplied.find(email => email.name === appliedCandidate.email) ? <code style={{ color: 'red' }}>This email already applied for this job</code> : ''}
                         </div>
                         <div className={styles.applyField}>
                             <label>Kontakt-Telefon</label>

@@ -1,9 +1,10 @@
-import { Job } from "../types/Job"
+import { Company, Job } from "@prisma/client"
 
-export const formatHomeFilter = (selectedJobs: Job[]) => {
+export const formatHomeFilter = (selectedJobs: Job[], getCompanies: Company[]) => {
     if (!selectedJobs) return
 
     const filteredJobs = selectedJobs.filter(job => job.status !== false)
+
 
     let roles: string[] = []
     filteredJobs.map(job => {
@@ -25,8 +26,10 @@ export const formatHomeFilter = (selectedJobs: Job[]) => {
 
     let companies: string[] = []
     filteredJobs.map(job => {
-        if (companies.find(company => company === job.company.name)) return
-        return companies = [...companies, job.company.name]
+        const companyName = getCompanies.find(company => company.id === job.companyId)?.name
+        if (!companyName) return
+        if (companies.find(company => company === companyName)) return
+        return companies = [...companies, companyName]
     })
 
     return {

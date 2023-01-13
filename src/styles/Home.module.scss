@@ -56,7 +56,7 @@
     text-align: center;
 
     .altHeader {
-      display: none;
+      display: flex;
       flex-direction: row;
       gap: 10px;
       margin-left: auto;
@@ -315,7 +315,6 @@
 
     .jobTopics {
       margin-bottom: 1rem;
-      margin-left: 1rem;
 
       h4 {
         font-weight: 600;

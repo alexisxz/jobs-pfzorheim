@@ -1,27 +1,45 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.scss'
-
 import BoehmlerLogo from 'public/böhmler-logo.png'
 import StirnerLogo from 'public/stirner-stirner-logo.png'
 import PolyRackLogo from 'public/polyrack-logo.jpeg'
-
-
 import React, { useEffect, useState } from 'react'
-import { Job } from '../types/Job'
-import { fakeJobs } from '../data/fakeData'
 import JobCard from '../components/JobCard'
 import { clearFilters, formatHomeFilter } from '../helpers/formatHomeFilters'
 import Link from 'next/link'
+import { AppliedEmail, Company, Job, PrismaClient } from '@prisma/client'
 
-export default function Home() {
-  const [jobs, setJobs] = useState<Job[]>(fakeJobs.filter(job => job.status !== false))
-  const [jobCardsQuantity, setJobCardsQuantity] = useState<number>(fakeJobs.filter(job => job.status !== false).length)
+// prisma
+export async function getStaticProps() {
+  const prisma = new PrismaClient()
+  const jobs: Job[] = await prisma.job.findMany({ where: { status: true } })
+  const companies: Company[] = await prisma.company.findMany()
+  const appliedEmails: AppliedEmail[] = await prisma.appliedEmail.findMany()
+
+  return {
+    props: {
+      initialJobs: jobs,
+      initialCompanies: companies,
+      initialAppliedEmails: appliedEmails
+    }
+  };
+}
+
+type Props = {
+  initialJobs: Job[],
+  initialCompanies: Company[],
+  initialAppliedEmails: AppliedEmail[]
+}
+
+export default function Index(props: Props) {
+  const [jobs, setJobs] = useState<Job[]>(props.initialJobs)
+  const [jobCardsQuantity, setJobCardsQuantity] = useState<number>(props.initialJobs.length)
   const [jobsList, setJobsList] = useState<Job[]>()
   const [maxJobCards, setMaxJobCards] = useState<number>(5)
 
   //filter
-  const [filtersCategory, setFiltersCategory] = useState(formatHomeFilter(fakeJobs))
+  const [filtersCategory, setFiltersCategory] = useState(formatHomeFilter(props.initialJobs, props.initialCompanies))
   const [filters, setFilters] = useState({
     title: '',
     role: '',
@@ -42,45 +60,48 @@ export default function Home() {
   }, [jobCardsQuantity, jobs, maxJobCards])
 
   useEffect(() => {
-    if (!filters.title && !filters.field && !filters.role && !filters.location && !filters.company) return setJobs(fakeJobs.filter(job => job.status !== false))
+    if (!filters.title && !filters.field && !filters.role && !filters.location && !filters.company) return setJobs(props.initialJobs)
 
-    let newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)))
+    const filteredCompanyId = props.initialCompanies.find(company => company.name === filters.company)?.id
+
+    let newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)))
 
     //allone filters
-    if (filters.company !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.company.name === filters.company)
+    if (filters.company !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && filteredCompanyId === job.companyId)
 
-    if (filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role)
+    if (filters.role !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role)
 
-    if (filters.field !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field)
+    if (filters.field !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field)
 
-    if (filters.location !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.location === filters.location)
+    if (filters.location !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.location === filters.location)
 
     // couple filters
-    if (filters.role !== '' && filters.field !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && job.field === filters.field)
+    if (filters.role !== '' && filters.field !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && job.field === filters.field)
 
-    if (filters.role !== '' && filters.location !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && job.location === filters.location)
+    if (filters.role !== '' && filters.location !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && job.location === filters.location)
 
-    if (filters.field !== '' && filters.location !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && job.location === filters.location)
+    if (filters.field !== '' && filters.location !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && job.location === filters.location)
 
-    if (filters.role !== '' && filters.company !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && job.company.name === filters.company)
+    if (filters.role !== '' && filters.company !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && filteredCompanyId === job.companyId)
 
-    if (filters.field !== '' && filters.company !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && job.company.name === filters.company)
+    if (filters.field !== '' && filters.company !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && filteredCompanyId === job.companyId)
 
-    if (filters.location !== '' && filters.company !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.location === filters.location && job.company.name === filters.company)
+    if (filters.location !== '' && filters.company !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.location === filters.location && filteredCompanyId === job.companyId)
 
     // tripple filters
-    if (filters.field !== '' && filters.location !== '' && filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && job.location === filters.location && job.role === filters.role)
+    if (filters.field !== '' && filters.location !== '' && filters.role !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && job.location === filters.location && job.role === filters.role)
 
-    if (filters.company !== '' && filters.location !== '' && filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.company.name === filters.company && job.location === filters.location && job.role === filters.role)
+    if (filters.company !== '' && filters.location !== '' && filters.role !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && filteredCompanyId === job.companyId && job.location === filters.location && job.role === filters.role)
 
-    if (filters.company !== '' && filters.field !== '' && filters.role !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.company.name === filters.company && job.field === filters.field && job.role === filters.role)
+    if (filters.company !== '' && filters.field !== '' && filters.role !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && filteredCompanyId === job.companyId && job.field === filters.field && job.role === filters.role)
 
-    if (filters.company !== '' && filters.location !== '' && filters.field !== '') newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.company.name === filters.company && job.location === filters.location && job.field === filters.field)
+    if (filters.company !== '' && filters.location !== '' && filters.field !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && filteredCompanyId === job.companyId && job.location === filters.location && job.field === filters.field)
 
     // all filters
-    if (filters.company !== '' && filters.location !== '' && filters.field !== '' && filters.role) newJobsList = fakeJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.company.name === filters.company && job.location === filters.location && job.field === filters.field && job.role === filters.role)
+    if (filters.company !== '' && filters.location !== '' && filters.field !== '' && filters.role) newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && filteredCompanyId === job.companyId && job.location === filters.location && job.field === filters.field && job.role === filters.role)
 
     setJobsList(newJobsList.sort((a, b) => a.postedDate.getTime() - b.postedDate.getTime()))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters])
 
   // handler
@@ -171,7 +192,7 @@ export default function Home() {
         <section className={`${styles.section}`}>
           <div className={styles.container}>
             {jobsList?.map((job, index) => (
-              <JobCard job={job} key={index} />
+              <JobCard job={job} appliedEmails={props.initialAppliedEmails} companies={props.initialCompanies} key={index} />
             ))}
           </div>
         </section>
@@ -187,3 +208,4 @@ export default function Home() {
     </>
   )
 }
+

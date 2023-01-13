@@ -1,4 +1,4 @@
-import { AppliedEmail, Benefit, Company, Job, Task } from "@prisma/client"
+import { AppliedEmail, Company, Job, PrismaClient } from "@prisma/client"
 
 
 export type Action = {
@@ -7,11 +7,9 @@ export type Action = {
 }
 
 export type State = {
-    Jobs: Job[],
-    Companies: Company[],
-    Tasks: Task[],
-    Benefits: Benefit[],
-    AppliedEmails: AppliedEmail[],
+    jobsState: Job[],
+    companiesState: Company[],
+    appliedEmailsState: AppliedEmail[],
 }
 
 export const appReducer = (state: State, action: Action): State => {
@@ -23,14 +21,13 @@ export const appReducer = (state: State, action: Action): State => {
             const candidateEmail = action.payload.candidateEmail
             if (!candidateEmail) return state
 
-            const newAppliedEmail: AppliedEmail = { id: state.AppliedEmails.length + 1, jobId: selectedJob.id, name: candidateEmail }
+            const newAppliedEmail: AppliedEmail = { id: state.appliedEmailsState.length + 1, jobId: selectedJob.id, name: candidateEmail }
 
-            const newAppliedEmailState: AppliedEmail[] = [...state.AppliedEmails, newAppliedEmail]
+            const newAppliedEmailState: AppliedEmail[] = [...state.appliedEmailsState, newAppliedEmail]
 
-            const newState: State = { ...state, AppliedEmails: newAppliedEmailState }
+            const newState: State = { ...state, appliedEmailsState: newAppliedEmailState }
             return newState
         }
-
         default: return state
     }
 }

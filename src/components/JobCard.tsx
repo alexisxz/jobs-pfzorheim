@@ -10,7 +10,7 @@ import { Job } from '../types/Job'
 import { Company } from '../types/Company'
 import { database, storage } from '../firebase'
 import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
 import { Candidate } from '../types/Candidate'
 
 type Props = {

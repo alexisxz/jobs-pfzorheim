@@ -1,37 +1,35 @@
 /* eslint-disable @next/next/no-img-element */
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 import styles from '../styles/Home.module.scss'
 import { E164Number } from 'libphonenumber-js/types'
-
-//helpers
 import { formatDate } from '../helpers/formatDate'
-import { AppliedEmail, Company, Job } from '@prisma/client'
+import { Job } from '../types/Job'
+import { Company } from '../types/Company'
+import { database, storage } from '../firebase'
+import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
+import { addDoc, collection } from 'firebase/firestore'
+import { Candidate } from '../types/Candidate'
 
 type Props = {
     job: Job,
     companies: Company[],
-    appliedEmails: AppliedEmail[],
 }
 
-type Candidate = {
-    name: string,
-    surname: string,
-    phone: string,
-    attachment: string,
-    email: string,
-}
+function JobCard({ job, companies }: Props) {
+    const jobsDatabaseRef = collection(database, "jobs")
+    const candidatesDatabaseRef = collection(database, "candidates")
 
-function JobCard({ job, companies, appliedEmails }: Props) {
-    const isPartner: boolean | undefined = companies.find(company => company.id === job.companyId)?.partner
+    const isPartner: boolean = true
     const jobCompany: Company | undefined = companies.find(company => company.id === job.companyId)
-    const jobEmailsApplied: AppliedEmail[] = appliedEmails.filter(email => email.jobId === job.id)
+    const jobEmailsApplied: string[] | undefined = job.emailsApplied
 
+    const [cvUrl, setCvUrl] = useState<string>('')
     const [isExtended, setIsExtended] = useState<string>('none')
     const [candidateNumber, setCandidateNumber] = useState<E164Number | undefined>()
-    const [appliedCandidate, setAppliedCandidate] = useState<Candidate>({ name: '', email: '', surname: '', phone: '', attachment: '' })
+    const [appliedCandidate, setAppliedCandidate] = useState<Candidate>({ name: '', email: '', surname: '', phone: '', attachment: null, jobId: job.id, companyId: job.companyId })
 
     useEffect(() => {
         if (!candidateNumber) return
@@ -49,6 +47,41 @@ function JobCard({ job, companies, appliedEmails }: Props) {
     const handleCandidateOnChange = (event: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLSelectElement>) => {
         setAppliedCandidate({ ...appliedCandidate, [event.currentTarget.name]: event.currentTarget.value })
         console.log(appliedCandidate)
+    }
+
+    const handleAttachment = (e: any) => {
+        if (e.target.files[0]) {
+            setAppliedCandidate({...appliedCandidate, attachment: e.target.files[0]})
+        }
+    }
+
+    const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+        if(!appliedCandidate.attachment) return
+        const attachmentRef = ref(storage, `cvs/${appliedCandidate.attachment.name}`)
+        uploadBytes(attachmentRef, appliedCandidate.attachment)
+            .then(() => {
+                getDownloadURL(attachmentRef)
+                    .then(async (url) => {
+                        await addDoc(candidatesDatabaseRef, {
+                            name: appliedCandidate.name,
+                            surname: appliedCandidate.surname,
+                            phone: appliedCandidate.phone,
+                            attachment: url,
+                            email: appliedCandidate.email,
+                            jobId: appliedCandidate.jobId,
+                            companyId: appliedCandidate.companyId,
+                        })
+                    })
+                    .catch((error) => {
+                        console.log(error.message)
+                    })
+            })
+            .catch((error) => {
+                console.log(error.message)
+            })
+        setAppliedCandidate({name: '', email: '', surname: '', phone: '', attachment: null, jobId: job.id, companyId: job.companyId})
     }
 
     return (
@@ -108,7 +141,7 @@ function JobCard({ job, companies, appliedEmails }: Props) {
                     <div className={styles.companyInfos}>
                         <img alt={jobCompany?.name} src={jobCompany?.image} />
                         <h3>{jobCompany?.name}</h3>
-                        {jobCompany?.partner ? <h5>Partner ✅</h5> : ''}
+                        <h5>Partner ✅</h5>
                         <div className={styles.copyJobIdClipboard}>
                             <button onClick={() => { navigator.clipboard.writeText(job.id) }}>JobID kopieren</button>
                             <input value={job.id} />
@@ -121,19 +154,25 @@ function JobCard({ job, companies, appliedEmails }: Props) {
                 </div>
                 <div className={styles.jobTopics}>
                     <h4>Ihre Aufgaben:</h4>
-                    <p>{job.tasks}</p>
+                    <ul>
+                        {job.tasks.map((task, index) => (<li key={index}>{task}</li>))}
+                    </ul>
                 </div>
                 <div className={styles.jobTopics}>
                     <h4>Sie bieten:</h4>
-                    <p>{job.profile}</p>
+                    <ul>
+                        {job.profile.map((profile, index) => (<li key={index}>{profile}</li>))}
+                    </ul>
                 </div>
                 <div className={styles.jobTopics}>
                     <h4>Wir bieten:</h4>
-                    <p>{job.benefits}</p>
+                    <ul>
+                        {job.benefits.map((benefit, index) => (<li key={index}>{benefit}</li>))}
+                    </ul>
                 </div>
                 <div className={styles.applyJobForm} id={job.id}>
                     <h4 style={{ fontWeight: 600 }}> Jetzt bewerben</h4>
-                    <form action="https://formsubmit.co/faf324c9c5baeb920124737601280b10" method="POST" encType="multipart/form-data">
+                    <form onSubmit={handleOnSubmit}>
                         <div style={{ display: 'flex', gap: '1rem' }}>
                             <div className={styles.applyField}>
                                 <label>Vorname</label>
@@ -147,7 +186,7 @@ function JobCard({ job, companies, appliedEmails }: Props) {
                         <div className={styles.applyField}>
                             <label>Email</label>
                             <input type="email" name='email' value={appliedCandidate.email} onChange={event => handleCandidateOnChange(event)} required />
-                            {jobEmailsApplied.find(email => email.name === appliedCandidate.email) ? <code style={{ color: 'red' }}>This email already applied for this job</code> : ''}
+                            {job.emailsApplied?.find(email => email === appliedCandidate.email) ? <code style={{ color: 'red' }}>This email already applied for this job</code> : ''}
                         </div>
                         <div className={styles.applyField}>
                             <label>Kontakt-Telefon</label>
@@ -155,7 +194,7 @@ function JobCard({ job, companies, appliedEmails }: Props) {
                         </div>
                         <div className={styles.applyField}>
                             <label>Lebenslauf (.pdf)</label>
-                            <input type="file" accept="application/pdf" name='attachment' value={appliedCandidate.attachment} onChange={event => handleCandidateOnChange(event)} required />
+                            <input type="file" accept="application/pdf" name='attachment' onChange={handleAttachment} required />
                         </div>
                         <div>
                             {!appliedCandidate.email || !appliedCandidate.name || !appliedCandidate.surname || !appliedCandidate.phone || !appliedCandidate.attachment ? <p style={{ margin: '1rem 0' }}>Ich brauche alle Informationen 🥸</p> : <p style={{ margin: '1rem 0' }}>Perfekt 😎</p>}

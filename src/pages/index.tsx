@@ -8,38 +8,25 @@ import React, { useEffect, useState } from 'react'
 import JobCard from '../components/JobCard'
 import { clearFilters, formatHomeFilter } from '../helpers/formatHomeFilters'
 import Link from 'next/link'
-import { AppliedEmail, Company, Job, PrismaClient } from '@prisma/client'
+import { collection, getDocs } from 'firebase/firestore'
+import { database } from '../firebase'
+import { Job } from '../types/Job'
+import { Company } from '../types/Company'
 
-// prisma
-export async function getStaticProps() {
-  const prisma = new PrismaClient()
-  const jobs: Job[] = await prisma.job.findMany({ where: { status: true } })
-  const companies: Company[] = await prisma.company.findMany()
-  const appliedEmails: AppliedEmail[] = await prisma.appliedEmail.findMany()
+export default function Index() {
+  const jobsDatabaseRef = collection(database, "jobs")
+  const companiesDatabaseRef = collection(database, "companies")
 
-  return {
-    props: {
-      initialJobs: jobs,
-      initialCompanies: companies,
-      initialAppliedEmails: appliedEmails
-    }
-  };
-}
+  const [jobs, setJobs] = useState<Job[] | any>([])
+  const [companies, setCompanies] = useState<Company[] | any>([])
 
-type Props = {
-  initialJobs: Job[],
-  initialCompanies: Company[],
-  initialAppliedEmails: AppliedEmail[]
-}
 
-export default function Index(props: Props) {
-  const [jobs, setJobs] = useState<Job[]>(props.initialJobs)
-  const [jobCardsQuantity, setJobCardsQuantity] = useState<number>(props.initialJobs.length)
+  const [jobCardsQuantity, setJobCardsQuantity] = useState<number>(0)
   const [jobsList, setJobsList] = useState<Job[]>()
   const [maxJobCards, setMaxJobCards] = useState<number>(5)
 
   //filter
-  const [filtersCategory, setFiltersCategory] = useState(formatHomeFilter(props.initialJobs, props.initialCompanies))
+  const [filtersCategory, setFiltersCategory] = useState<any>()
   const [filters, setFilters] = useState({
     title: '',
     role: '',
@@ -49,7 +36,16 @@ export default function Index(props: Props) {
   })
 
   useEffect(() => {
-    let getJobs = []
+    readDataFirestore()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (!jobs || !companies) return
+
+    setFiltersCategory(formatHomeFilter(jobs, companies))
+    setJobCardsQuantity(jobs.length)
+    let getJobs:Job[] = []
 
     for (let i = 0; i < maxJobCards && i < jobCardsQuantity; i++) {
       getJobs.push(jobs[i])
@@ -57,52 +53,70 @@ export default function Index(props: Props) {
 
     setJobsList(getJobs.sort((a, b) => a.postedDate.getTime() - b.postedDate.getTime()))
 
-  }, [jobCardsQuantity, jobs, maxJobCards])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jobs, companies])
 
   useEffect(() => {
-    if (!filters.title && !filters.field && !filters.role && !filters.location && !filters.company) return setJobs(props.initialJobs)
+    if (!filters.title && !filters.field && !filters.role && !filters.location && !filters.company) return setJobsList(jobs)
 
-    const filteredCompanyId = props.initialCompanies.find(company => company.name === filters.company)?.id
+    const filteredCompanyId = companies.find((company:Company) => company.name === filters.company)?.id
 
-    let newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)))
+    let newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)))
 
     //allone filters
-    if (filters.company !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && filteredCompanyId === job.companyId)
+    if (filters.company !== '') newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && filteredCompanyId === job.companyId)
 
-    if (filters.role !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role)
+    if (filters.role !== '') newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role)
 
-    if (filters.field !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field)
+    if (filters.field !== '') newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field)
 
-    if (filters.location !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.location === filters.location)
+    if (filters.location !== '') newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.location === filters.location)
 
     // couple filters
-    if (filters.role !== '' && filters.field !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && job.field === filters.field)
+    if (filters.role !== '' && filters.field !== '') newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && job.field === filters.field)
 
-    if (filters.role !== '' && filters.location !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && job.location === filters.location)
+    if (filters.role !== '' && filters.location !== '') newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && job.location === filters.location)
 
-    if (filters.field !== '' && filters.location !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && job.location === filters.location)
+    if (filters.field !== '' && filters.location !== '') newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && job.location === filters.location)
 
-    if (filters.role !== '' && filters.company !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && filteredCompanyId === job.companyId)
+    if (filters.role !== '' && filters.company !== '') newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.role === filters.role && filteredCompanyId === job.companyId)
 
-    if (filters.field !== '' && filters.company !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && filteredCompanyId === job.companyId)
+    if (filters.field !== '' && filters.company !== '') newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && filteredCompanyId === job.companyId)
 
-    if (filters.location !== '' && filters.company !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.location === filters.location && filteredCompanyId === job.companyId)
+    if (filters.location !== '' && filters.company !== '') newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.location === filters.location && filteredCompanyId === job.companyId)
 
     // tripple filters
-    if (filters.field !== '' && filters.location !== '' && filters.role !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && job.location === filters.location && job.role === filters.role)
+    if (filters.field !== '' && filters.location !== '' && filters.role !== '') newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && job.field === filters.field && job.location === filters.location && job.role === filters.role)
 
-    if (filters.company !== '' && filters.location !== '' && filters.role !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && filteredCompanyId === job.companyId && job.location === filters.location && job.role === filters.role)
+    if (filters.company !== '' && filters.location !== '' && filters.role !== '') newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && filteredCompanyId === job.companyId && job.location === filters.location && job.role === filters.role)
 
-    if (filters.company !== '' && filters.field !== '' && filters.role !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && filteredCompanyId === job.companyId && job.field === filters.field && job.role === filters.role)
+    if (filters.company !== '' && filters.field !== '' && filters.role !== '') newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && filteredCompanyId === job.companyId && job.field === filters.field && job.role === filters.role)
 
-    if (filters.company !== '' && filters.location !== '' && filters.field !== '') newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && filteredCompanyId === job.companyId && job.location === filters.location && job.field === filters.field)
+    if (filters.company !== '' && filters.location !== '' && filters.field !== '') newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && filteredCompanyId === job.companyId && job.location === filters.location && job.field === filters.field)
 
     // all filters
-    if (filters.company !== '' && filters.location !== '' && filters.field !== '' && filters.role) newJobsList = props.initialJobs.filter(job => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && filteredCompanyId === job.companyId && job.location === filters.location && job.field === filters.field && job.role === filters.role)
+    if (filters.company !== '' && filters.location !== '' && filters.field !== '' && filters.role) newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)) && filteredCompanyId === job.companyId && job.location === filters.location && job.field === filters.field && job.role === filters.role)
 
-    setJobsList(newJobsList.sort((a, b) => a.postedDate.getTime() - b.postedDate.getTime()))
+    setJobsList(newJobsList)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters])
+
+  // get and readers
+  const readDataFirestore = async () => {
+    await getDocs(jobsDatabaseRef)
+    .then((response) => {
+      setJobs(response.docs.map(job => {
+        if(!job.data().startingDate) return {...job.data(), id: job.id, startingDate: '', postedDate: job.data().postedDate.toDate()}
+        return {...job.data(), id: job.id, startingDate: job.data().startingDate.toDate(), postedDate: job.data().postedDate.toDate()}
+      }))
+    })
+
+    await getDocs(companiesDatabaseRef).then((response) => {
+      setCompanies(response.docs.map(company => {
+        return {...company.data(), id: company.id}
+      }))
+    })
+  }
 
   // handler
   const handleFiltersOnChange = (event: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLSelectElement>) => {
@@ -152,7 +166,7 @@ export default function Index(props: Props) {
               <div className={styles.searchFilter}>
                 <select name='role' value={filters.role} onChange={e => handleFiltersOnChange(e)}>
                   <option value="" selected>👩‍🎓 Einstieg als</option>
-                  {filtersCategory?.role.map((item, index) => (
+                  {filtersCategory?.role.map((item: any, index: number) => (
                     <option key={index} value={item}>{item}</option>
                   ))}
                 </select>
@@ -160,7 +174,7 @@ export default function Index(props: Props) {
               <div className={styles.searchFilter}>
                 <select name='field' value={filters.field} onChange={e => handleFiltersOnChange(e)}>
                   <option value="" selected>🧳 Arbeitsbereiche</option>
-                  {filtersCategory?.field.map((item, index) => (
+                  {filtersCategory?.field.map((item: any, index: number) => (
                     <option key={index} value={item}>{item}</option>
                   ))}
                 </select>
@@ -168,7 +182,7 @@ export default function Index(props: Props) {
               <div className={styles.searchFilter}>
                 <select name='location' value={filters.location} onChange={e => handleFiltersOnChange(e)}>
                   <option value="" selected>🌎 Standort</option>
-                  {filtersCategory?.location.map((item, index) => (
+                  {filtersCategory?.location.map((item: any, index: number) => (
                     <option key={index} value={item}>{item}</option>
                   ))}
                 </select>
@@ -176,7 +190,7 @@ export default function Index(props: Props) {
               <div className={styles.searchFilter}>
                 <select name='company' value={filters.company} onChange={e => handleFiltersOnChange(e)}>
                   <option value="" selected>🏭 Unternehmen</option>
-                  {filtersCategory?.company.map((item, index) => (
+                  {filtersCategory?.company.map((item: any, index: number) => (
                     <option key={index} value={item}>{item}</option>
                   ))}
                 </select>
@@ -191,8 +205,8 @@ export default function Index(props: Props) {
 
         <section className={`${styles.section}`}>
           <div className={styles.container}>
-            {jobsList?.map((job, index) => (
-              <JobCard job={job} appliedEmails={props.initialAppliedEmails} companies={props.initialCompanies} key={index} />
+            {jobsList?.map((job: Job) => (
+              <JobCard job={job} companies={companies} key={job.id} />
             ))}
           </div>
         </section>

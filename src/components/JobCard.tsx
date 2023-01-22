@@ -16,15 +16,16 @@ import { Candidate } from '../types/Candidate'
 type Props = {
     job: Job,
     companies: Company[],
+    candidates: Candidate[]
 }
 
-function JobCard({ job, companies }: Props) {
+function JobCard({ job, companies, candidates }: Props) {
     const jobsDatabaseRef = collection(database, "jobs")
     const candidatesDatabaseRef = collection(database, "candidates")
 
     const isPartner: boolean = true
     const jobCompany: Company | undefined = companies.find(company => company.id === job.companyId)
-    const jobEmailsApplied: string[] | undefined = job.emailsApplied
+    const jobCandidates: Candidate[] = candidates.filter(candidate => candidate.jobId === job.id)
 
     const [cvUrl, setCvUrl] = useState<string>('')
     const [isExtended, setIsExtended] = useState<string>('none')
@@ -46,7 +47,6 @@ function JobCard({ job, companies }: Props) {
 
     const handleCandidateOnChange = (event: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLSelectElement>) => {
         setAppliedCandidate({ ...appliedCandidate, [event.currentTarget.name]: event.currentTarget.value })
-        console.log(appliedCandidate)
     }
 
     const handleAttachment = (e: any) => {
@@ -57,6 +57,7 @@ function JobCard({ job, companies }: Props) {
 
     const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        if(jobCandidates.find(candidate => candidate.email === appliedCandidate.email)) return alert('Email already applied')
 
         if(!appliedCandidate.attachment) return
         const attachmentRef = ref(storage, `cvs/${appliedCandidate.attachment.name}`)
@@ -186,7 +187,7 @@ function JobCard({ job, companies }: Props) {
                         <div className={styles.applyField}>
                             <label>Email</label>
                             <input type="email" name='email' value={appliedCandidate.email} onChange={event => handleCandidateOnChange(event)} required />
-                            {job.emailsApplied?.find(email => email === appliedCandidate.email) ? <code style={{ color: 'red' }}>This email already applied for this job</code> : ''}
+                            {jobCandidates.find(candidate => candidate.email === appliedCandidate.email) ? <code style={{ color: 'red' }}>This email already applied for this job</code> : ''}
                         </div>
                         <div className={styles.applyField}>
                             <label>Kontakt-Telefon</label>

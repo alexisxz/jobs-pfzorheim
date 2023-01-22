@@ -12,14 +12,16 @@ import { collection, getDocs } from 'firebase/firestore'
 import { database } from '../firebase'
 import { Job } from '../types/Job'
 import { Company } from '../types/Company'
+import { Candidate } from '../types/Candidate'
 
 export default function Index() {
   const jobsDatabaseRef = collection(database, "jobs")
   const companiesDatabaseRef = collection(database, "companies")
+  const candidatesDatabaseRef = collection(database, "candidates")
 
   const [jobs, setJobs] = useState<Job[] | any>([])
   const [companies, setCompanies] = useState<Company[] | any>([])
-
+  const [candidates, setCandidates] = useState<Candidate[] | any>([])
 
   const [jobCardsQuantity, setJobCardsQuantity] = useState<number>(0)
   const [jobsList, setJobsList] = useState<Job[]>()
@@ -116,6 +118,12 @@ export default function Index() {
         return {...company.data(), id: company.id}
       }))
     })
+
+    await getDocs(candidatesDatabaseRef).then((response) => {
+      setCandidates(response.docs.map(candidate => {
+        return {...candidate.data(), id: candidate.id}
+      }))
+    })
   }
 
   // handler
@@ -206,7 +214,7 @@ export default function Index() {
         <section className={`${styles.section}`}>
           <div className={styles.container}>
             {jobsList?.map((job: Job) => (
-              <JobCard job={job} companies={companies} key={job.id} />
+              <JobCard job={job} companies={companies} candidates={candidates} key={job.id} />
             ))}
           </div>
         </section>

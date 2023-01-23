@@ -39,7 +39,7 @@ export default function Index() {
 
   useEffect(() => {
     readDataFirestore()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function Index() {
 
     setFiltersCategory(formatHomeFilter(jobs, companies))
     setJobCardsQuantity(jobs.length)
-    let getJobs:Job[] = []
+    let getJobs: Job[] = []
 
     for (let i = 0; i < maxJobCards && i < jobCardsQuantity; i++) {
       getJobs.push(jobs[i])
@@ -55,13 +55,13 @@ export default function Index() {
 
     setJobsList(getJobs.sort((a, b) => a.postedDate.getTime() - b.postedDate.getTime()))
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jobs, companies])
 
   useEffect(() => {
     if (!filters.title && !filters.field && !filters.role && !filters.location && !filters.company) return setJobsList(jobs)
 
-    const filteredCompanyId = companies.find((company:Company) => company.name === filters.company)?.id
+    const filteredCompanyId = companies.find((company: Company) => company.name === filters.company)?.id
 
     let newJobsList = (jobs).filter((job: Job) => job.status !== false && (job.title.includes(filters.title) || job.id.includes(filters.title)))
 
@@ -106,22 +106,22 @@ export default function Index() {
   // get and readers
   const readDataFirestore = async () => {
     await getDocs(jobsDatabaseRef)
-    .then((response) => {
-      setJobs(response.docs.map(job => {
-        if(!job.data().startingDate) return {...job.data(), id: job.id, startingDate: '', postedDate: job.data().postedDate.toDate()}
-        return {...job.data(), id: job.id, startingDate: job.data().startingDate.toDate(), postedDate: job.data().postedDate.toDate()}
-      }))
-    })
+      .then((response) => {
+        setJobs(response.docs.map(job => {
+          if (!job.data().startingDate) return { ...job.data(), id: job.id, startingDate: '', postedDate: job.data().postedDate.toDate() }
+          return { ...job.data(), id: job.id, startingDate: job.data().startingDate.toDate(), postedDate: job.data().postedDate.toDate() }
+        }))
+      })
 
     await getDocs(companiesDatabaseRef).then((response) => {
       setCompanies(response.docs.map(company => {
-        return {...company.data(), id: company.id}
+        return { ...company.data(), id: company.id }
       }))
     })
 
     await getDocs(candidatesDatabaseRef).then((response) => {
       setCandidates(response.docs.map(candidate => {
-        return {...candidate.data(), id: candidate.id}
+        return { ...candidate.data(), id: candidate.id }
       }))
     })
   }
@@ -162,8 +162,8 @@ export default function Index() {
           <div className={styles.container}>
             <div className={styles.picsWrapper}>
               <span>trusted by</span>
-              <Link href={"/partner/polyrack"}><div><Image src={PolyRackLogo} alt='PolyRack logo' /></div></Link>
-              <Link href={"/partner/boehmler"}><div><Image src={BoehmlerLogo} alt='Böhmler logo' /></div></Link>
+              <Link href={"/polyrack"}><div><Image src={PolyRackLogo} alt='PolyRack logo' /></div></Link>
+              <Link href={"/boehmler"}><div><Image src={BoehmlerLogo} alt='Böhmler logo' /></div></Link>
             </div>
           </div>
         </section>

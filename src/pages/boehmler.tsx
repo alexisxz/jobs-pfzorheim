@@ -148,7 +148,7 @@ export default function Boehmler() {
                             <h5>Powered by <strong>Böhmler GmbH</strong></h5>
                             <Image src={BoehmlerLogo} alt='Stirner logo' className={styles.stirnerLogo} />
                             <div className={styles.inputFilter}>
-                                <input type="text" placeholder='🔎 Search job by JobID or by title (z.B. Mechaniker, Ausbildung, etc...)' name='title' value={filters.title} onChange={e => handleFiltersOnChange(e)} />
+                                <input type="text" placeholder='🔎 Nach JobId oder Titel filtern (z.B. Mechaniker, Ausbildung, etc...)' name='title' value={filters.title} onChange={e => handleFiltersOnChange(e)} />
                             </div>
                         </div>
                     </div>

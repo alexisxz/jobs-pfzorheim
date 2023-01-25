@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.scss'
 import BoehmlerLogo from 'public/böhmler-logo.png'
 import StirnerLogo from 'public/stirner-stirner-logo.png'
-import PolyRackLogo from 'public/polyrack-logo.jpeg'
+import PolyRackLogo from 'public/polyrack.png'
 import React, { useEffect, useState } from 'react'
 import JobCard from '../components/JobCard'
 import { clearFilters, formatHomeFilter } from '../helpers/formatHomeFilters'
@@ -152,7 +152,7 @@ export default function Index() {
               <h5>Powered by <strong>stirner/stirner</strong></h5>
               <Image src={StirnerLogo} alt='Stirner logo' className={styles.stirnerLogo} />
               <div className={styles.inputFilter}>
-                <input type="text" placeholder='🔎 Search job by JobID or by title (z.B. Mechaniker, Ausbildung, etc...)' name='title' value={filters.title} onChange={e => handleFiltersOnChange(e)} />
+                <input type="text" placeholder='🔎 Nach JobId oder Titel filtern (z.B. Mechaniker, Ausbildung, etc...)' name='title' value={filters.title} onChange={e => handleFiltersOnChange(e)} />
               </div>
             </div>
           </div>

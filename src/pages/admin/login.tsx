@@ -26,7 +26,6 @@ export default function Login({ }: Props) {
         await auth.onAuthStateChanged(user => {
             if (user) {
                 route.replace("/admin")
-
             } else {
             }
         })
@@ -60,7 +59,7 @@ export default function Login({ }: Props) {
                 <div className={styles.loginWrapper}>
                     <h2>Login</h2>
                     <form onSubmit={handleOnSubmit}>
-                        <input type="text" placeholder='📧 Email' required value={email} onChange={e => setEmail(e.target.value)} />
+                        <input type="email" placeholder='📧 Email' required value={email} onChange={e => setEmail(e.target.value)} />
                         <input type="password" placeholder='🔐 Passwort' required value={password} onChange={e => setPassword(e.target.value)} />
                         <button type='submit' className={styles.btnPrimary}>Login</button>
                     </form>

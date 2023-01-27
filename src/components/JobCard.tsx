@@ -30,7 +30,7 @@ function JobCard({ job, companies, candidates }: Props) {
     const [cvUrl, setCvUrl] = useState<string>('')
     const [isExtended, setIsExtended] = useState<string>('none')
     const [candidateNumber, setCandidateNumber] = useState<E164Number | undefined>()
-    const [appliedCandidate, setAppliedCandidate] = useState<Candidate>({ name: '', email: '', surname: '', phone: '', attachment: null, jobId: job.id, companyId: job.companyId })
+    const [appliedCandidate, setAppliedCandidate] = useState<Candidate>({ id: '', name: '', email: '', surname: '', phone: '', attachment: null, jobId: job.id, companyId: job.companyId, postedDate: new Date() })
 
     useEffect(() => {
         if (!candidateNumber) return
@@ -51,15 +51,15 @@ function JobCard({ job, companies, candidates }: Props) {
 
     const handleAttachment = (e: any) => {
         if (e.target.files[0]) {
-            setAppliedCandidate({...appliedCandidate, attachment: e.target.files[0]})
+            setAppliedCandidate({ ...appliedCandidate, attachment: e.target.files[0] })
         }
     }
 
     const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        if(jobCandidates.find(candidate => candidate.email === appliedCandidate.email)) return alert('Email already applied')
+        if (jobCandidates.find(candidate => candidate.email === appliedCandidate.email)) return alert('Email already applied')
 
-        if(!appliedCandidate.attachment) return
+        if (!appliedCandidate.attachment) return
         const attachmentRef = ref(storage, `cvs/${appliedCandidate.attachment.name}`)
         uploadBytes(attachmentRef, appliedCandidate.attachment)
             .then(() => {
@@ -73,6 +73,7 @@ function JobCard({ job, companies, candidates }: Props) {
                             email: appliedCandidate.email,
                             jobId: appliedCandidate.jobId,
                             companyId: appliedCandidate.companyId,
+                            postedDate: new Date(),
                         })
                     })
                     .catch((error) => {
@@ -82,7 +83,7 @@ function JobCard({ job, companies, candidates }: Props) {
             .catch((error) => {
                 console.log(error.message)
             })
-        setAppliedCandidate({name: '', email: '', surname: '', phone: '', attachment: null, jobId: job.id, companyId: job.companyId})
+        setAppliedCandidate({ id: '', name: '', email: '', surname: '', phone: '', attachment: null, jobId: job.id, companyId: job.companyId, postedDate: new Date() })
     }
 
     return (

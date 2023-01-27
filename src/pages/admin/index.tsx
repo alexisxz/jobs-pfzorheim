@@ -1,6 +1,7 @@
 import { signOut } from 'firebase/auth'
 import { collection, doc, documentId, getDoc, getDocs, query, where } from 'firebase/firestore'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import BottomAdminNav from '../../components/BottomAdminNav'
@@ -115,7 +116,8 @@ export default function Index({ }: Props) {
                             <div className={styles.inputFilter}>
                                 <input type="text" placeholder='🔎 Nach JobId oder Titel filtern (z.B. Mechaniker, Ausbildung, etc...)' name='title' value={filters.title} onChange={e => handleFiltersOnChange(e)} />
                             </div>
-                            <div>
+                            <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
+                                <button className={styles.btnPrimary}><Link style={{ color: "var(--color-white)" }} href={"/admin/profile"}>Profile bearbeiten</Link></button>
                                 <button className={styles.btnSecondary} onClick={handleLogout}>Logout</button>
                             </div>
                         </div>

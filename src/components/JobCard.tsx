@@ -27,10 +27,11 @@ function JobCard({ job, companies, candidates }: Props) {
     const jobCompany: Company | undefined = companies.find(company => company.id === job.companyId)
     const jobCandidates: Candidate[] = candidates.filter(candidate => candidate.jobId === job.id)
 
-    const [cvUrl, setCvUrl] = useState<string>('')
     const [isExtended, setIsExtended] = useState<string>('none')
+
     const [candidateNumber, setCandidateNumber] = useState<E164Number | undefined>()
-    const [appliedCandidate, setAppliedCandidate] = useState<Candidate>({ id: '', name: '', email: '', surname: '', phone: '', attachment: null, jobId: job.id, companyId: job.companyId, postedDate: new Date() })
+    const [appliedCandidate, setAppliedCandidate] = useState<Candidate>({ id: '', name: '', email: '', surname: '', phone: '', attachment: null, jobId: job.id, companyId: job.companyId, postedDate: new Date(), status: 'Neu' })
+    const [isCandidateApplied, setIsCandidadeApplied] = useState<boolean>(false)
 
     useEffect(() => {
         if (!candidateNumber) return
@@ -83,7 +84,8 @@ function JobCard({ job, companies, candidates }: Props) {
             .catch((error) => {
                 console.log(error.message)
             })
-        setAppliedCandidate({ id: '', name: '', email: '', surname: '', phone: '', attachment: null, jobId: job.id, companyId: job.companyId, postedDate: new Date() })
+        setIsCandidadeApplied(true)
+        setAppliedCandidate({ id: '', name: '', email: '', surname: '', phone: '', attachment: null, jobId: job.id, companyId: job.companyId, postedDate: new Date(), status: 'Neu' })
     }
 
     return (
@@ -199,8 +201,8 @@ function JobCard({ job, companies, candidates }: Props) {
                             <input type="file" accept="application/pdf" name='attachment' onChange={handleAttachment} required />
                         </div>
                         <div>
-                            {!appliedCandidate.email || !appliedCandidate.name || !appliedCandidate.surname || !appliedCandidate.phone || !appliedCandidate.attachment ? <p style={{ margin: '1rem 0' }}>Ich brauche alle Informationen 🥸</p> : <p style={{ margin: '1rem 0' }}>Perfekt 😎</p>}
-                            <button type='submit' className={styles.btnPrimary}>Weiter</button>
+                            {!isCandidateApplied ? !appliedCandidate.email || !appliedCandidate.name || !appliedCandidate.surname || !appliedCandidate.phone || !appliedCandidate.attachment ? <p style={{ margin: '1rem 0' }}>Ich brauche alle Informationen 🥸</p> : <p style={{ margin: '1rem 0' }}>Perfekt 😎</p> : (<p style={{ margin: '1rem 0', color: 'green' }}>Stelle beworben 🎉</p>)}
+                            {!isCandidateApplied ? (<button type='submit' className={styles.btnPrimary}>Weiter</button>) : ''}
                         </div>
                     </form>
                 </div>

@@ -1,14 +1,14 @@
 import { signOut } from 'firebase/auth'
-import { collection, doc, documentId, getDoc, getDocs, query, where } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import AdminJobCard from '../../components/AdminJobCard'
 import BottomAdminNav from '../../components/BottomAdminNav'
 import { auth, database } from '../../firebase'
 import { formatDate } from '../../helpers/formatDate'
 import styles from '../../styles/Admin.module.scss'
-import { Candidate } from '../../types/Candidate'
 import { Job } from '../../types/Job'
 
 type Props = {}
@@ -37,19 +37,21 @@ export default function Index({ }: Props) {
     useEffect(() => {
         if (!user) return
         fetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user])
 
     useEffect(() => {
         if (!jobs) return
-        setFilteredJobs(jobs)
+        setFilteredJobs(jobs.sort((a, b) => b.postedDate.getTime() - a.postedDate.getTime()))
     }, [jobs])
 
     useEffect(() => {
         if (!jobs) return
 
-        if (!filters.title) return setFilteredJobs(jobs)
+        if (!filters.title) return setFilteredJobs(jobs.sort((a, b) => b.postedDate.getTime() - a.postedDate.getTime()))
 
         setFilteredJobs(jobs.filter(job => (job.title.includes(filters.title) || job.id.includes(filters.title))))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filters])
 
 
@@ -73,10 +75,10 @@ export default function Index({ }: Props) {
 
     // get jobs and applicants
     const fetchData = async () => {
-        if (!user.company) return
+        if (!user.companyId) return
 
-        const jobsDatabaseRef = query(collection(database, "jobs"), where("companyId", "==", user.company))
-        const candidatesDatabaseRef = query(collection(database, "candidates"), where("companyId", "==", user.company))
+        const jobsDatabaseRef = query(collection(database, "jobs"), where("companyId", "==", user.companyId))
+        const candidatesDatabaseRef = query(collection(database, "candidates"), where("companyId", "==", user.companyId))
 
 
         await getDocs(jobsDatabaseRef)
@@ -112,7 +114,7 @@ export default function Index({ }: Props) {
                 <section className={`${styles.section} ${styles.headingSection}`}>
                     <div className={styles.container}>
                         <div className={styles.adminHeading}>
-                            <h2>{user.greetings}, willkommen!</h2>
+                            <h2>👾 {user.greetings}, willkommen!</h2>
                             <div className={styles.inputFilter}>
                                 <input type="text" placeholder='🔎 Nach JobId oder Titel filtern (z.B. Mechaniker, Ausbildung, etc...)' name='title' value={filters.title} onChange={e => handleFiltersOnChange(e)} />
                             </div>
@@ -127,12 +129,7 @@ export default function Index({ }: Props) {
                 <section className={styles.section}>
                     <div className={styles.container}>
                         {filterdJobs.map((job: Job) => (
-                            <div key={job.id} className={styles.adminJobCard}>
-                                <h5>{job.id}</h5>
-                                <h3>{job.title}</h3>
-                                <p><span>📺 Status:</span>{job.status === true ? '🟢 On' : '🔴 Off'}</p>
-                                <p><span>🏗 Hergestellt in:</span>{formatDate(job.postedDate)}</p>
-                            </div>
+                            <AdminJobCard key={job.id} job={job} />
                         ))}
                     </div>
                 </section>

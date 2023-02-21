@@ -8,4 +8,7 @@ export type Candidate = {
     postedDate: Date,
     jobId: string,
     companyId: string,
+    status: string,
+    comments?: string,
+    responsible?: string,
 }

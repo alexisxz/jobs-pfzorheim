@@ -5,11 +5,10 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import BottomAdminNav from '../../components/BottomAdminNav'
+import CandidateCard from '../../components/CandidateCard'
 import { auth, database } from '../../firebase'
-import { formatDate } from '../../helpers/formatDate'
 import styles from '../../styles/Admin.module.scss'
 import { Candidate } from '../../types/Candidate'
-import { Job } from '../../types/Job'
 
 type Props = {}
 
@@ -26,7 +25,7 @@ export default function Index({ }: Props) {
         role: '',
         field: '',
         location: '',
-        company: '',
+        companyId: '',
     })
 
     useEffect(() => {
@@ -37,11 +36,12 @@ export default function Index({ }: Props) {
     useEffect(() => {
         if (!user) return
         fetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user])
 
     useEffect(() => {
         if (!candidates) return
-        setFilteredCandidates(candidates)
+        setFilteredCandidates(candidates.sort((a, b) => b.postedDate.getTime() - a.postedDate.getTime()))
     }, [candidates])
 
     useEffect(() => {
@@ -50,6 +50,7 @@ export default function Index({ }: Props) {
         if (!filters.title) return setFilteredCandidates(candidates)
 
         setFilteredCandidates(candidates.filter(candidate => (candidate.title.includes(filters.title) || candidate.id.includes(filters.title))))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filters])
 
 
@@ -73,9 +74,9 @@ export default function Index({ }: Props) {
 
     // get jobs and applicants
     const fetchData = async () => {
-        if (!user.company) return
+        if (!user.companyId) return
 
-        const candidatesDatabaseRef = query(collection(database, "candidates"), where("companyId", "==", user.company))
+        const candidatesDatabaseRef = query(collection(database, "candidates"), where("companyId", "==", user.companyId))
 
         await getDocs(candidatesDatabaseRef)
             .then((response) => {
@@ -100,7 +101,7 @@ export default function Index({ }: Props) {
     return (
         <>
             <Head>
-                <title>Pforzheim Jobs Admin panel</title>
+                <title>Pforzheim Candidates Admin panel</title>
                 <meta name="description" content="Admin Panel" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/next.svg" />
@@ -109,7 +110,7 @@ export default function Index({ }: Props) {
                 <section className={`${styles.section} ${styles.headingSection}`}>
                     <div className={styles.container}>
                         <div className={styles.adminHeading}>
-                            <h2>{user.greetings}, willkommen!</h2>
+                            <h2>👾 {user.greetings}, willkommen!</h2>
                             <div className={styles.inputFilter}>
                                 <input type="text" placeholder='🔎 Nach JobId oder Titel filtern (z.B. Mechaniker, Ausbildung, etc...)' name='title' value={filters.title} onChange={e => handleFiltersOnChange(e)} />
                             </div>
@@ -122,14 +123,9 @@ export default function Index({ }: Props) {
                 </section>
 
                 <section className={styles.section}>
-                    <div className={styles.container}>
+                    <div className={`${styles.container} ${styles.adminContainer}`}>
                         {filteredCandidates.map((candidate: Candidate) => (
-                            <div key={candidate.id} className={styles.adminJobCard}>
-                                <h5>{candidate.id}</h5>
-                                <h3>{candidate.name}</h3>
-                                <p><span>🏗 Hergestellt in:</span>{formatDate(candidate.postedDate)}</p>
-                                <a href={candidate.attachment} target='_blank' rel="noreferrer" >📑</a>
-                            </div>
+                            <CandidateCard key={candidate.id} candidate={candidate} />
                         ))}
                     </div>
                 </section>

@@ -1,6 +1,6 @@
 export type User = {
     email: string,
-    gretting: string,
+    greetings: string,
     status: boolean,
-    company: string
+    companyId: string
 }

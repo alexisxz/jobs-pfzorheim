@@ -4,7 +4,7 @@
 }
 
 .section {
-    min-width: 100vw;
+    min-width: 100%;
 }
 
 .headingSection {
@@ -15,8 +15,13 @@
     margin: 0 auto;
     width: var(--container-width-lg);
     padding: 1rem;
-
     color: var(--color-white);
+}
+
+.hover {
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 // BUTTONS
@@ -109,7 +114,11 @@
     }
 }
 
-// ADMIN PAGE (JOBS)
+// ADMIN PAGE (JOBS AND BEWERBERINNEN PAGE)
+.adminContainer {
+    padding-bottom: 10rem;
+}
+
 .adminHeading {
     text-align: center;
     display: flex;
@@ -140,10 +149,11 @@
     }
 }
 
-.adminJobCard {
+.adminCard {
+    margin-top: .5rem;
     background-color: var(--color-dark-bg);
     padding: 1rem;
-    border-radius: 10px;
+    border-radius: 10px 10px 0 0;
 
     display: flex;
     gap: 2rem;
@@ -151,11 +161,9 @@
     align-items: center;
     text-align: center;
     min-width: 100%;
-    margin-bottom: 1rem;
 
     &:hover {
         background-color: var(--color-gray-bg);
-        cursor: pointer;
     }
 
     h3 {
@@ -167,9 +175,42 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        max-width: 200px;
+        flex-wrap: wrap;
 
         span {
             font-size: 10px;
+        }
+    }
+
+    div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 5px;
+
+        span {
+            font-size: 10px;
+            margin-bottom: auto;
+        }
+
+        select {
+            padding: .5rem;
+            background-color: transparent;
+            border-radius: 10px;
+            border: 1px solid var(--color-white);
+            color: var(--color-white);
+            text-align: center;
+            -webkit-appearance: none;
+            appearance: none;
+            transition: var(--transition);
+
+            &:hover {
+                background-color: var(--color-white);
+                color: var(--color-black);
+                cursor: pointer;
+            }
         }
     }
 
@@ -182,6 +223,129 @@
 
         &:hover {
             background-color: var(--color-secondary);
+        }
+    }
+}
+
+.adminCardFooter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background-color: var(--color-gray-bg);
+    border-radius: 0 0 10px 10px;
+    border-top: 1px solid var(--color-dark-bg);
+    padding: 1rem;
+
+    input {
+        border-radius: 10px;
+        padding: .2rem 1rem;
+        margin-right: 1rem;
+    }
+
+    select {
+        padding: .5rem;
+        background-color: transparent;
+        border-radius: 10px;
+        border: 1px solid var(--color-white);
+        color: var(--color-white);
+        text-align: center;
+        -webkit-appearance: none;
+        appearance: none;
+        transition: var(--transition);
+
+        &:hover {
+            background-color: var(--color-white);
+            color: var(--color-black);
+            cursor: pointer;
+        }
+    }
+}
+
+.adminCardCommentArea {
+    display: flex;
+    gap: 1rem;
+    min-width: 100%;
+    margin-bottom: 1.5rem;
+
+    textarea {
+        flex: 1;
+        border-radius: 0 0 10px 10px;
+        height: 100px;
+        padding: 1rem;
+    }
+
+    div {
+        margin-top: .2rem;
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+
+        a:hover {
+            cursor: pointer;
+            color: var(--color-primary);
+        }
+
+        button {
+            background-color: lightcoral;
+            color: var(--color-white);
+            padding: .2rem 1rem;
+            border-radius: 10px;
+            transition: var(--transition);
+
+            &:hover {
+                cursor: pointer;
+                background-color: red;
+            }
+        }
+    }
+}
+
+// PROFILE PAGE 
+.profileContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+// CREATEJOB PAGE
+.createJobForm {
+    padding: 1rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    div {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        gap: .5rem;
+        align-items: center;
+
+        input {
+            padding: .2rem 1rem;
+            border-radius: 10px;
+            width: 100%;
+        }
+
+        textarea {
+            padding: 1rem;
+            border-radius: 10px;
+        }
+    }
+
+    .createJobGrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem 4rem;
+        text-align: center;
+
+        input {
+            text-align: center;
         }
     }
 }
@@ -238,16 +402,6 @@
     }
 }
 
-// PROFILE PAGE 
-.profileContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-
 .updateWrapper {
     display: flex;
     flex-direction: column;
@@ -265,5 +419,30 @@
         &:hover {
             opacity: 80%;
         }
+    }
+}
+
+// CandidateCard
+.deleteCandidatePopup {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 999;
+
+    background-color: rgba(0, 0, 0);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    text-align: center;
+    padding: 1rem 10rem;
+    justify-content: center;
+
+    div {
+        display: flex;
+        gap: 1rem;
     }
 }
